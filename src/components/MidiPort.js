@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import WebMidi from 'webmidi';
 
 const MidiPorts = props => {

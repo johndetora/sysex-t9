@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import * as XLSX from 'xlsx';
-import WebMidi from 'webmidi';
+import React, { useState } from 'react';
 import MidiPorts from './components/MidiPort';
-import ExcelReader from './components/FileReader';
+import ExcelReader from './components/ReadExcel';
 import './App.css';
 
 function App() {
     const [items, setItems] = useState([]);
     const [input, setInput] = useState();
     const [output, setOutput] = useState();
-    const [response, setResponse] = useState(null);
 
     function clickHandler(e) {
         // const message = [];
@@ -47,7 +44,6 @@ function App() {
                 return el.toUpperCase();
             });
 
-            setResponse(hex);
             findResult(target, hex);
             // resultTest(hex);
             //TODO: make sure this actually means the message was received
