@@ -30,7 +30,9 @@ function ExcelReader(props) {
             for (let i = 0; i < onlySysex.length; i++) {
                 onlySysex[i].index = i;
             }
+
             props.setItems(onlySysex);
+
             console.log('Worksheet load successful');
         };
     }

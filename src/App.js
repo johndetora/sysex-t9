@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
 import MidiPorts from './components/MidiPort';
 import ExcelReader from './components/ReadExcel';
+import Collection from './components/Collection';
 import './App.css';
 
 function App() {
     const [items, setItems] = useState([]);
     const [input, setInput] = useState();
     const [output, setOutput] = useState();
+    const [collection, setCollection] = useState([]);
+
+    function addToCollection(e) {
+        const value = e.target.value;
+        const match = items.filter(item => item.sysex.includes(value));
+        setCollection([...collection, match[0]]);
+    }
 
     function clickHandler(e) {
-        // const message = [];
         console.log(e.target.id);
         const target = parseInt(e.target.id);
+        // TODO: I should be able to just filter based on the target value and not worry about IDs or changing the function to fit the Collection input
         // Finds cell sysex message based on the target ID, which matches the index
         const value = items
             .filter(cell => cell.index === target)
@@ -29,6 +37,9 @@ function App() {
         // Send the sysex
         output.send(0xf0, message);
         receiveSysex(target);
+    }
+    function clickHandler2(e) {
+        console.log(e.target);
     }
 
     function receiveSysex(target) {
@@ -102,36 +113,47 @@ function App() {
                 <ExcelReader setItems={setItems} />
                 <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} />
             </div>
-            <table className='table-container'>
-                <thead>
-                    <tr>
-                        {/*TODO: make these propereties that show up only once loaded */}
-                        <th>Test</th>
-                        <th>Sysex</th>
-                        <th>Expected</th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {items.map(data => (
-                        <tr key={data.index}>
-                            <td>{data.test}</td>
-                            <td className='description'>{data.description}</td>
-                            <td className='expected-container'>
-                                <div className='expected'>
-                                    {data.expected}
-                                    <button className='send-button' id={data.index} value={data.sysex} onClick={clickHandler}>
-                                        test{' '}
-                                    </button>
-                                </div>
-                            </td>
-                            <td className='results'>{data.result.match(/[^,*]/gm)}</td>
-                            {/*the regex is to eliminate the commas */}
-                            {/* <td>{response}</td> */}
+            <div className='main-container'>
+                <table className='table-container'>
+                    <thead>
+                        <tr>
+                            {/*TODO: make these propereties that show up only once loaded */}
+                            <th>Test</th>
+                            <th>Sysex</th>
+                            <th>Expected</th>
+                            <th>Result</th>
+                            <th>Notes</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {items.map(data => (
+                            <tr key={data.index}>
+                                <td>{data.test}</td>
+                                <td className='description'>
+                                    {data.description}
+                                    <button onClick={addToCollection} value={data.sysex}>
+                                        Add
+                                    </button>
+                                </td>
+                                <td className='expected-container'>
+                                    <div className='expected'>
+                                        {data.expected}
+                                        <button className='send-button' id={data.index} value={data.sysex} onClick={clickHandler}>
+                                            test{' '}
+                                        </button>
+                                    </div>
+                                </td>
+                                {/*the regex is to eliminate the commas */}
+                                <td className='results'>{data.result.match(/[^,*]/gm)}</td>
+                                <td>
+                                    <input type='textarea' cols='5' rows='10' wrap='hard' className='notes'></input>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <Collection collection={collection} setCollection={setCollection} fn={addToCollection} sendSys={clickHandler} />
+            </div>
         </div>
     );
 }
