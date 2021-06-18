@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+// TODO: add delete button to message
+// TODO: add response box or fixed response bar
 function Collection(props) {
     function clickHandler(e) {
         const inputText = document.getElementById('collection-input').value;
