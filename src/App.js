@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MidiPorts from './components/MidiPort';
 import ExcelReader from './components/ReadExcel';
 import Collection from './components/Collection';
+import ExportExcel from './components/ExportExcel';
 import './App.css';
 
 function App() {
@@ -37,9 +38,6 @@ function App() {
         // Send the sysex
         output.send(0xf0, message);
         receiveSysex(target);
-    }
-    function clickHandler2(e) {
-        console.log(e.target);
     }
 
     function receiveSysex(target) {
@@ -111,6 +109,7 @@ function App() {
         <div className='container'>
             <div className='utilities'>
                 <ExcelReader setItems={setItems} />
+                {/* <ExportExcel data={items} /> */}
                 <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} />
             </div>
             <div className='main-container'>
