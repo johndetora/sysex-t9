@@ -18,7 +18,8 @@ function App() {
     }
 
     function clickHandler(e) {
-        console.log(e.target.id);
+        // console.log(e.target.id);
+        console.log(e);
         const target = parseInt(e.target.id);
         // TODO: I should be able to just filter based on the target value and not worry about IDs or changing the function to fit the Collection input
         // Finds cell sysex message based on the target ID, which matches the index
