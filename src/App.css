@@ -1,8 +1,13 @@
 /* TODO: colors */
+:root {
+    --blue: #073642;
+}
+
 html {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
-    background-color: rgba(176, 215, 222, 0.543);
+    background-color: #fdf6e3;
+    color: var(--blue);
 }
 
 button {
@@ -11,6 +16,10 @@ button {
 
 select {
     cursor: pointer;
+}
+
+th {
+    color: var(--blue);
 }
 
 .file {
@@ -32,8 +41,16 @@ select {
 .table-container {
     width: 80%;
 }
+
+.table-header {
+    color: var(--blue);
+}
+
+.header-item {
+    color: red;
+}
 .table-container td {
-    border: 1px solid rgb(122, 152, 198);
+    border: 1px solid var(--blue);
     border-radius: 2px;
     padding: 15px;
     line-height: 20px;
@@ -65,7 +82,7 @@ select {
 }
 
 .collection-container {
-    border: 1px solid rgb(64, 86, 155);
+    border: 1px solid var(--blue);
     padding: 10px;
     margin: 25px;
     width: 200px;
@@ -79,7 +96,7 @@ select {
 }
 .messages-container {
     background-color: white;
-    border: 1px solid gray;
+    border: 1px solid var(--blue);
     padding: 10px;
     height: 100px;
     overflow: auto;

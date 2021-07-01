@@ -1,6 +1,6 @@
 import React from 'react';
 import WebMidi from 'webmidi';
-
+import '../App.css';
 const MidiPorts = props => {
     WebMidi.enable(function (err) {
         // If midi ports aren't found, log error

@@ -7,9 +7,11 @@ function ExcelReader(props) {
         const fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
         fileReader.onload = e => {
+            const sheetName = prompt('Please enter the name of the sheet');
             const bufferArray = e.target.result;
             const wb = XLSX.read(bufferArray, { type: 'buffer' });
-            const worksheet = wb.Sheets['Sysex'];
+
+            const worksheet = wb.Sheets[sheetName];
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
             const sysexMatch = /F0(.*?)F7/gm;
             let sheetObj = [];

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import '../App.css';
 // TODO: add delete button to message
 // TODO: add response box or fixed response bar
 function Collection(props) {

@@ -116,9 +116,9 @@ function App() {
             <div className='main-container'>
                 <table className='table-container'>
                     <thead>
-                        <tr>
+                        <tr className='table-header'>
                             {/*TODO: make these propereties that show up only once loaded */}
-                            <th>Test</th>
+                            <th className='header__item'>Test</th>
                             <th>Sysex</th>
                             <th>Expected</th>
                             <th>Result</th>
