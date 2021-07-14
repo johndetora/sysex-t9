@@ -129,7 +129,7 @@ function App() {
                     <tbody>
                         {items.map(data => (
                             <tr key={data.index} className='table_row'>
-                                <td>{data.name}</td>
+                                <td className='msg_name'>{data.name}</td>
                                 <td className='port'>{data.port}</td>
                                 {/* Sysex Column */}
                                 <td className='sysex-container'>
@@ -146,7 +146,7 @@ function App() {
                                 </td>
 
                                 {/*the regex is to eliminate the commas */}
-                                <td className='new-expected'>{data.expected}</td>
+                                <td className='response'>{data.expected}</td>
                                 <td className='response'>{data.response.match(/[^,*]/gm)}</td>
                                 <td></td>
                                 <td>
