@@ -35,7 +35,7 @@ function App() {
             el = '0x' + el;
             return parseInt(Number(el, 10));
         });
-        console.log('sent:', message);
+        console.log('sent: (RAW)', message);
         // Send the sysex
 
         if (output) {
@@ -48,23 +48,26 @@ function App() {
 
     function receiveSysex(target) {
         input.addListener('sysex', 'all', function (e) {
-            // console.log('midi received');
-            //TODO: add a conditional to check if a response is expected and if successful
             const reply = [...e.data];
+            console.log('received (RAW):', reply);
+            console.log('response length is', reply.length);
+            // compare length function goes here
 
-            // Convert to hex
-            const hex = reply.map(el => {
-                el = el.toString(16) + ' ';
-                if (el.length === 2) el = '0' + el;
-                return el.toUpperCase();
-            });
-
-            findResult(target, hex);
-            // resultTest(hex);
-            //TODO: make sure this actually means the message was received
-            // console.log('message received');
-            // hexConversion(response);
+            updateData(target, decimalToHex(reply));
         });
+    }
+
+    function decimalToHex(reply) {
+        const converter = reply.map(el => {
+            el = el.toString(16) + ' ';
+            if (el.length === 2) el = '0' + el;
+            return el.toUpperCase();
+        });
+        return converter;
+    }
+
+    function byteComparison(message) {
+        return message.length;
     }
 
     // const resultTest = response => {
@@ -72,43 +75,34 @@ function App() {
     //     console.log(response.length);
     // };
 
-    function findResult(target, response) {
+    // Adds response to the items state
+    function updateData(target, response) {
         const result = items.map(item => {
             if (item.index === target) {
-                // So that the response isn't appended
-                if (item.result.indexOf('F0') === -1) {
-                    item.result += response;
+                // So that the response isn't appended into the cell every time it's retested
+                if (item.response.indexOf('F0') === -1) {
+                    item.response += response;
+                }
+                //TODO: this function is doing multiple things not described by it's name.  consider breaking up
+                // Sets expected length
+                if (!item.expectedLength) {
+                    item.expectedLength += item.expected.split(' ').length;
+                }
+
+                if (!item.responseLength) {
+                    item.responseLength += byteComparison(response);
+                }
+
+                if (item.responseLength === item.expectedLength) {
+                    item.passFail = 'pass';
+                    console.table(item);
                 }
             }
             return item;
         });
 
         console.log('sysex response: ' + response.join(''));
-
         setItems(result);
-
-        // let itemsCopy = Object.assign({}, items);
-        // itemsCopy[target].result = response;
-        // setItems(itemsCopy);
-        // console.log(itemsCopy);
-        // setItems(itemsCopy);
-        // const array = [...obj, obj.forEach(el => el.index = 1)]
-
-        // setItems(prevState => ({
-        //     ...prevState,
-        //     {[target]: response}
-        // }));
-        // console.log(setItems(items => (items[target].result = 'foo')));
-        // const result = items.map(item => {
-        //     if (item.index === target) {
-        //         // setItems(prevState => ({
-        //         //     ...prevState,
-        //         //     ...result,
-        //         // }));
-        //         return (item.result = response);
-        //     }
-        // });
-        // setItems(items => result);
     }
 
     return (
@@ -128,12 +122,13 @@ function App() {
                             <th>Sysex Message</th>
                             <th>Expected</th>
                             <th>Response</th>
+                            <th>Pass/Fail</th>
                             <th>Notes</th>
                         </tr>
                     </thead>
                     <tbody>
                         {items.map(data => (
-                            <tr key={data.index}>
+                            <tr key={data.index} className='table_row'>
                                 <td>{data.name}</td>
                                 <td className='port'>{data.port}</td>
                                 {/* Sysex Column */}
@@ -153,8 +148,12 @@ function App() {
                                 {/*the regex is to eliminate the commas */}
                                 <td className='new-expected'>{data.expected}</td>
                                 <td className='response'>{data.response.match(/[^,*]/gm)}</td>
-
+                                <td></td>
                                 <td>
+                                    <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
+                                        {data.responseLength ? `Response: ${data.responseLength} bytes` : ''}
+                                    </div>
+
                                     <input type='textarea' cols='5' rows='10' wrap='hard' className='notes'></input>
                                 </td>
                             </tr>

@@ -24,8 +24,20 @@ function ExcelReader(props) {
             let start = 3; // Start of the actual data
 
             for (let i = start; i < MAX; i++) {
-                sheetObj.push({ index: i, name: data[i][0], port: data[i][1], sysex: data[i][2], expected: data[i][3], response: '' });
+                sheetObj.push({
+                    index: i,
+                    name: data[i][0],
+                    port: data[i][1],
+                    sysex: data[i][2],
+                    expected: data[i][3],
+                    expectedLength: null,
+                    response: '',
+                    responseLength: null,
+                    passFail: null,
+                });
             }
+
+            //    }
             // // Assign sysex property to regexed sysex
             // for (let i = 0; i < sheetObj.length; i++) {
             //     // console.log(sheetObj[i]); // For monitoring input during development

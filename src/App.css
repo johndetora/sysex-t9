@@ -22,10 +22,9 @@ th {
     color: var(--blue);
 }
 
-tr {
+.table_row {
     max-height: 100px;
 }
-
 .file {
     margin-right: 60px;
     cursor: pointer;
@@ -122,4 +121,12 @@ tr {
 
 .notes {
     height: 200px;
+}
+
+.pass {
+    color: green;
+}
+
+.fail {
+    color: red;
 }
