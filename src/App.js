@@ -37,8 +37,13 @@ function App() {
         });
         console.log('sent:', message);
         // Send the sysex
-        output.send(0xf0, message);
-        receiveSysex(target);
+
+        if (output) {
+            output.send(0xf0, message);
+            receiveSysex(target);
+        } else {
+            alert('No MIDI output port selected');
+        }
     }
 
     function receiveSysex(target) {
@@ -118,33 +123,37 @@ function App() {
                     <thead>
                         <tr className='table-header'>
                             {/*TODO: make these propereties that show up only once loaded */}
-                            <th className='header__item'>Test</th>
-                            <th>Sysex</th>
+                            <th className='header__item'>Name</th>
+                            <th>Port</th>
+                            <th>Sysex Message</th>
                             <th>Expected</th>
-                            <th>Result</th>
+                            <th>Response</th>
                             <th>Notes</th>
                         </tr>
                     </thead>
                     <tbody>
                         {items.map(data => (
                             <tr key={data.index}>
-                                <td>{data.test}</td>
-                                <td className='description'>
-                                    {data.description}
-                                    <button onClick={addToCollection} value={data.sysex}>
-                                        Add
-                                    </button>
-                                </td>
-                                <td className='expected-container'>
-                                    <div className='expected'>
-                                        {data.expected}
+                                <td>{data.name}</td>
+                                <td className='port'>{data.port}</td>
+                                {/* Sysex Column */}
+                                <td className='sysex-container'>
+                                    <div className='sysex-cell'>
+                                        {data.sysex}
                                         <button className='send-button' id={data.index} value={data.sysex} onClick={clickHandler}>
                                             test{' '}
                                         </button>
+                                        {/*  Collection Button
+                                        <button onClick={addToCollection} value={data.sysex}>
+                                            Add
+                                        </button> */}
                                     </div>
                                 </td>
+
                                 {/*the regex is to eliminate the commas */}
-                                <td className='results'>{data.result.match(/[^,*]/gm)}</td>
+                                <td className='new-expected'>{data.expected}</td>
+                                <td className='response'>{data.response.match(/[^,*]/gm)}</td>
+
                                 <td>
                                     <input type='textarea' cols='5' rows='10' wrap='hard' className='notes'></input>
                                 </td>
@@ -152,7 +161,7 @@ function App() {
                         ))}
                     </tbody>
                 </table>
-                <Collection collection={collection} setCollection={setCollection} fn={addToCollection} sendSys={clickHandler} />
+                {/* <Collection collection={collection} setCollection={setCollection} fn={addToCollection} sendSys={clickHandler} /> */}
             </div>
         </div>
     );
