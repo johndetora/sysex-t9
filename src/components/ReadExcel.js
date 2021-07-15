@@ -6,7 +6,13 @@ function ExcelReader(props) {
     function readExcel(file) {
         const fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
+        let regEx = /xlsx$/;
+
         fileReader.onload = e => {
+            if (regEx.test(file.name) === false) {
+                alert('ERROR: Incompatible file type.  Please upload a file with an extension of .xlsx');
+                return;
+            }
             // Set variables
             // const sheetName = prompt('Please enter the name of the sheet');
             const sheetName = 'SysEx';
@@ -16,7 +22,7 @@ function ExcelReader(props) {
             const worksheet = wb.Sheets[sheetName];
             console.log('worksheet', worksheet);
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-            console.group();
+
             console.table('data', data);
 
             let sheetObj = [];
@@ -39,6 +45,10 @@ function ExcelReader(props) {
             props.setItems(sheetObj);
             console.log('Worksheet load successful');
             props.setHelp(!props.help);
+        };
+        fileReader.onerror = e => {
+            alert('unknown error. please retry');
+            fileReader.abort();
         };
     }
 

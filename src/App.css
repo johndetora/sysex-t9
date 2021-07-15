@@ -8,7 +8,7 @@
     --red: #dc322f;
     --magenta: #d33682;
     --orange: #cb4b16;
-
+    --green: #cb4b16;
     --wheat: #fdf6e3;
     --light: #ffffff9e;
 }
@@ -77,11 +77,11 @@ th {
 }
 
 .pass {
-    color: #859900;
+    color: var(--green);
 }
 
 .fail {
-    color: #dc322f;
+    color: var(--orange);
 }
 
 /* Cells */

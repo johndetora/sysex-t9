@@ -114,9 +114,10 @@ function App() {
             <p className='title'>Sysex T9</p>
             <div className='utilities'>
                 <ExcelReader setItems={setItems} setHelp={setViewHelp} help={viewHelp} />
+                <ExportExcel data={items} />
                 {/* <ExportExcel data={items} /> */}
                 <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} />
-                <ExportExcel data={items} />
+
                 <HelpButton help={viewHelp} setHelp={setViewHelp} />
             </div>
             {viewHelp ? <Window /> : ''}
@@ -158,11 +159,13 @@ function App() {
                                     {data.expected} {data.expectedLength}
                                 </td>
                                 {/*the regex is to eliminate the commas */}
-                                <td className='response'>{data.response.match(/[^,*]/gm)}</td>
-                                <br />
-                                <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
-                                    {data.responseLength ? `Response: ${data.responseLength} bytes` : ''}
-                                </div>
+                                <td className='response'>
+                                    {data.response.match(/[^,*]/gm)}
+                                    <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
+                                        {data.responseLength ? `Response: ${data.responseLength} bytes` : ''}
+                                    </div>
+                                </td>
+
                                 {/* <td>
                                     <input type='textarea' wrap='hard' className='notes'></input>
                                 </td> */}
