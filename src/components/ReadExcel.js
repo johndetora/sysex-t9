@@ -38,7 +38,7 @@ function ExcelReader(props) {
             }
             props.setItems(sheetObj);
             console.log('Worksheet load successful');
-            props.help(false);
+            props.setHelp(!props.help);
         };
     }
 

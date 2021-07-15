@@ -113,7 +113,7 @@ function App() {
         <div className='container'>
             <p className='title'>Sysex T9</p>
             <div className='utilities'>
-                <ExcelReader setItems={setItems} help={setViewHelp} />
+                <ExcelReader setItems={setItems} setHelp={setViewHelp} help={viewHelp} />
                 {/* <ExportExcel data={items} /> */}
                 <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} />
                 <ExportExcel data={items} />
