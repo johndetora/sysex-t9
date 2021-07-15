@@ -1,6 +1,7 @@
 .title {
-    font-size: 15px;
+    font-size: 16px;
     text-align: center;
+    letter-spacing: 2px;
     margin: auto;
 }
 
@@ -16,8 +17,7 @@
     border-radius: 5px;
     padding: 10px 20px;
 }
-.utilities * {
-}
+
 .button {
     cursor: pointer;
     border: 1px solid var(--lightBlue);
@@ -26,6 +26,10 @@
     padding: 5px 8px;
 }
 
+.button:hover {
+    /* color: var(--cyan); */
+    transition: all 200ms;
+}
 select {
     cursor: pointer;
 }
