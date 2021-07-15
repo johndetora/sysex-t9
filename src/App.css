@@ -1,6 +1,7 @@
 /* TODO: colors */
 :root {
     --blue: #073642;
+    --lightBlue: #586e75;
     --wheat: #fdf6e3;
     --light: #ffffff9e;
 }
@@ -12,27 +13,20 @@ html {
     color: var(--blue);
 }
 
-button {
-    cursor: pointer;
+footer {
+    font-size: 10px;
+    padding: 5px;
+    color: var(--lightBlue);
+    bottom: 5px;
 }
 
-select {
-    cursor: pointer;
+.invisible {
+    display: none;
 }
-
-th {
-    color: var(--blue);
-}
-
-.file {
-    margin-right: 60px;
-    cursor: pointer;
-}
-
 .container {
     margin: auto;
     max-width: 1400px;
-    margin-top: 60px;
+    margin-top: 2%;
     height: 90%;
 }
 
@@ -47,22 +41,19 @@ th {
 }
 
 .table-container td {
-    border: 1px solid #586e75;
+    border: 1px solid var(--lightBlue);
     border-radius: 2px;
     padding: 5px 15px;
     background-color: var(--light);
     line-height: 20px;
 }
 
+th {
+    color: var(--blue);
+}
 .send-button {
     margin-top: 20px;
     width: 60%;
-}
-
-.utilities {
-    display: flex;
-    margin: 30px;
-    justify-content: flex-start;
 }
 
 .output {
@@ -76,30 +67,6 @@ th {
     width: 200px;
 
     position: fixed;
-}
-.title {
-    padding: 5px;
-    text-align: center;
-}
-.messages-container {
-    background-color: white;
-    border: 1px solid var(--blue);
-    padding: 10px;
-    overflow: auto;
-}
-
-.custom-message {
-    padding: 10px 0px;
-}
-.messages {
-    padding: 6px;
-    cursor: pointer;
-}
-.messages:hover {
-    background-color: rgba(176, 215, 222, 0.543);
-    color: rgb(111, 165, 95);
-    transition: all 0.2s;
-    border-radius: 5px;
 }
 
 .pass {
@@ -132,7 +99,60 @@ th {
 .response {
     width: 500px;
 }
-.notes {
+
+input[type='textarea'] {
     /* height: 200px; */
-    height: 100px;
+    outline: none;
+    height: 2rem;
+
+    overflow: auto;
+
+    text-align: start;
+    background-color: var(--light);
+    border: none;
+}
+
+/* custom messages */
+.messages-container {
+    background-color: white;
+    border: 1px solid var(--blue);
+    padding: 10px;
+    overflow: auto;
+}
+.custom-message {
+    padding: 10px 0px;
+}
+.messages {
+    padding: 6px;
+    cursor: pointer;
+}
+.messages:hover {
+    background-color: rgba(176, 215, 222, 0.543);
+    color: rgb(111, 165, 95);
+    transition: all 0.2s;
+    border-radius: 5px;
+}
+
+.window {
+    display: block;
+    background-color: var(--light);
+    border: 1px solid var(--lightBlue);
+    border-radius: 5px;
+
+    margin: auto;
+    display: block;
+
+    padding: 10px 30% 10px 5%;
+}
+
+.window__header {
+    margin: auto;
+}
+
+.window__content {
+    text-align: left;
+}
+
+.window__footer {
+    font: 200;
 }
