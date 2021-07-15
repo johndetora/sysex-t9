@@ -3,6 +3,9 @@ import MidiPorts from './components/MidiPort';
 import ExcelReader from './components/ReadExcel';
 import Collection from './components/Collection';
 import ExportExcel from './components/ExportExcel';
+import HelpButton from './components/HelpButton';
+import Window from './components/Window';
+import './Header.css';
 import './App.css';
 
 function App() {
@@ -10,6 +13,7 @@ function App() {
     const [input, setInput] = useState();
     const [output, setOutput] = useState();
     const [collection, setCollection] = useState([]);
+    const [viewHelp, setViewHelp] = useState(true);
 
     function addToCollection(e) {
         const value = e.target.value;
@@ -35,31 +39,39 @@ function App() {
             el = '0x' + el;
             return parseInt(Number(el, 10));
         });
-        console.log('sent:', message);
+        console.log('sent: (RAW)', message);
         // Send the sysex
-        output.send(0xf0, message);
-        receiveSysex(target);
+
+        if (output) {
+            output.send(0xf0, message);
+            receiveSysex(target);
+        } else {
+            alert('No MIDI output port selected');
+        }
     }
 
     function receiveSysex(target) {
         input.addListener('sysex', 'all', function (e) {
-            // console.log('midi received');
-            //TODO: add a conditional to check if a response is expected and if successful
             const reply = [...e.data];
+            console.log('received (RAW):', reply);
+            console.log('response length is', reply.length);
+            // compare length function goes here
 
-            // Convert to hex
-            const hex = reply.map(el => {
-                el = el.toString(16) + ' ';
-                if (el.length === 2) el = '0' + el;
-                return el.toUpperCase();
-            });
-
-            findResult(target, hex);
-            // resultTest(hex);
-            //TODO: make sure this actually means the message was received
-            // console.log('message received');
-            // hexConversion(response);
+            updateData(target, decimalToHex(reply));
         });
+    }
+
+    function decimalToHex(reply) {
+        const converter = reply.map(el => {
+            el = el.toString(16) + ' ';
+            if (el.length === 2) el = '0' + el;
+            return el.toUpperCase();
+        });
+        return converter;
+    }
+
+    function byteComparison(message) {
+        return message.length;
     }
 
     // const resultTest = response => {
@@ -67,93 +79,100 @@ function App() {
     //     console.log(response.length);
     // };
 
-    function findResult(target, response) {
+    // Adds response to the items state
+    function updateData(target, response) {
         const result = items.map(item => {
             if (item.index === target) {
-                // So that the response isn't appended
-                if (item.result.indexOf('F0') === -1) {
-                    item.result += response;
+                // So that the response isn't appended into the cell every time it's retested
+                if (item.response.indexOf('F0') === -1) {
+                    item.response += response;
+                }
+                //TODO: this function is doing multiple things not described by it's name.  consider breaking up
+                // Sets expected length
+                if (!item.expectedLength) {
+                    item.expectedLength += item.expected.split(' ').length;
+                }
+
+                if (!item.responseLength) {
+                    item.responseLength += byteComparison(response);
+                }
+
+                if (item.responseLength === item.expectedLength) {
+                    item.passFail = 'pass';
+                    console.table(item);
                 }
             }
             return item;
         });
 
         console.log('sysex response: ' + response.join(''));
-
         setItems(result);
-
-        // let itemsCopy = Object.assign({}, items);
-        // itemsCopy[target].result = response;
-        // setItems(itemsCopy);
-        // console.log(itemsCopy);
-        // setItems(itemsCopy);
-        // const array = [...obj, obj.forEach(el => el.index = 1)]
-
-        // setItems(prevState => ({
-        //     ...prevState,
-        //     {[target]: response}
-        // }));
-        // console.log(setItems(items => (items[target].result = 'foo')));
-        // const result = items.map(item => {
-        //     if (item.index === target) {
-        //         // setItems(prevState => ({
-        //         //     ...prevState,
-        //         //     ...result,
-        //         // }));
-        //         return (item.result = response);
-        //     }
-        // });
-        // setItems(items => result);
     }
 
     return (
         <div className='container'>
+            <p className='title'>Sysex T9</p>
             <div className='utilities'>
-                <ExcelReader setItems={setItems} />
+                <ExcelReader setItems={setItems} help={setViewHelp} />
                 {/* <ExportExcel data={items} /> */}
                 <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} />
+                <ExportExcel data={items} />
+                <HelpButton help={viewHelp} setHelp={setViewHelp} />
             </div>
+            {viewHelp ? <Window /> : ''}
             <div className='main-container'>
                 <table className='table-container'>
                     <thead>
-                        <tr className='table-header'>
+                        <tr className={items.length > 2 ? 'table-header' : 'invisible'}>
                             {/*TODO: make these propereties that show up only once loaded */}
-                            <th className='header__item'>Test</th>
-                            <th>Sysex</th>
+                            <th className='header__item'>Name</th>
+                            <th>Port</th>
+                            <th>Sysex Message</th>
                             <th>Expected</th>
-                            <th>Result</th>
-                            <th>Notes</th>
+                            <th>Response</th>
+                            {/* <th>Pass/Fail</th> */}
+                            {/* <th>Notes</th> */}
                         </tr>
                     </thead>
                     <tbody>
                         {items.map(data => (
-                            <tr key={data.index}>
-                                <td>{data.test}</td>
-                                <td className='description'>
-                                    {data.description}
-                                    <button onClick={addToCollection} value={data.sysex}>
-                                        Add
-                                    </button>
-                                </td>
-                                <td className='expected-container'>
-                                    <div className='expected'>
-                                        {data.expected}
+                            <tr key={data.index} className='table_row'>
+                                <td className='msg_name'>{data.name}</td>
+                                <td className='port'>{data.port}</td>
+                                {/* Sysex Column */}
+                                <td className='sysex-container'>
+                                    <div className='sysex-cell'>
+                                        {data.sysex}
                                         <button className='send-button' id={data.index} value={data.sysex} onClick={clickHandler}>
-                                            test{' '}
+                                            send{' '}
                                         </button>
+                                        {/*  Collection Button
+                                        <button onClick={addToCollection} value={data.sysex}>
+                                            Add
+                                        </button> */}
                                     </div>
                                 </td>
-                                {/*the regex is to eliminate the commas */}
-                                <td className='results'>{data.result.match(/[^,*]/gm)}</td>
-                                <td>
-                                    <input type='textarea' cols='5' rows='10' wrap='hard' className='notes'></input>
+
+                                {/* Expected */}
+                                <td className='response'>
+                                    {data.expected} {data.expectedLength}
                                 </td>
+                                {/*the regex is to eliminate the commas */}
+                                <td className='response'>{data.response.match(/[^,*]/gm)}</td>
+                                <br />
+                                <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
+                                    {data.responseLength ? `Response: ${data.responseLength} bytes` : ''}
+                                </div>
+                                {/* <td>
+                                    <input type='textarea' wrap='hard' className='notes'></input>
+                                </td> */}
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                <Collection collection={collection} setCollection={setCollection} fn={addToCollection} sendSys={clickHandler} />
+                {/* <Collection collection={collection} setCollection={setCollection} fn={addToCollection} sendSys={clickHandler} /> */}
             </div>
+            <footer>© Copyright 2021 John DeTora. All rights reserved.</footer>
         </div>
     );
 }

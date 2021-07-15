@@ -1,0 +1,43 @@
+.title {
+    font-size: 15px;
+    text-align: center;
+    margin: auto;
+}
+
+.utilities {
+    display: flex;
+    margin: 20px;
+    width: auto;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--light);
+    border: 1px solid var(--lightBlue);
+
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+.utilities * {
+}
+.button {
+    cursor: pointer;
+    border: 1px solid var(--lightBlue);
+    background-color: var(--light);
+    border-radius: 5px;
+    padding: 5px 8px;
+}
+
+select {
+    cursor: pointer;
+}
+
+input[type='file'] {
+    display: none;
+}
+
+.midi-ports {
+    padding: 5px;
+    border: 1px solid var(--lightBlue);
+    background-color: var(--light);
+    border-radius: 5px;
+    padding: 5px 18px;
+}
