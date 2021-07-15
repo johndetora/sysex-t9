@@ -18,7 +18,7 @@ function ExcelReader(props) {
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
             console.group();
             console.table('data', data);
-            const sysexMatch = /F0(.*?)F7/gm;
+
             let sheetObj = [];
             const MAX = data.length;
             let start = 3; // Start of the actual data
@@ -36,38 +36,24 @@ function ExcelReader(props) {
                     passFail: null,
                 });
             }
-
-            //    }
-            // // Assign sysex property to regexed sysex
-            // for (let i = 0; i < sheetObj.length; i++) {
-            //     // console.log(sheetObj[i]); // For monitoring input during development
-            //     if (typeof sheetObj[i].description === 'string') {
-            //         sheetObj[i].sysex = sheetObj[i].description.match(sysexMatch);
-            //     }
-            // }
-
             props.setItems(sheetObj);
-            console.table('sheet object', sheetObj);
-            // Filter out all rows that don't include a valid sysex cell
-            // const onlySysex = sheetObj.filter(cell => cell.sysex !== null);
-            // // Reassign index
-            // for (let i = 0; i < onlySysex.length; i++) {
-            //     onlySysex[i].index = i;
-            // }
-            // props.setItems(onlySysex);
             console.log('Worksheet load successful');
+            props.help(false);
         };
     }
 
     return (
-        <input
-            type='file'
-            className='file'
-            onChange={e => {
-                const file = e.target.files[0];
-                readExcel(file);
-            }}
-        />
+        <label className='button'>
+            Import Sheet
+            <input
+                type='file'
+                className='file'
+                onChange={e => {
+                    const file = e.target.files[0];
+                    readExcel(file);
+                }}
+            />
+        </label>
     );
 }
 
