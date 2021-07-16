@@ -2,6 +2,7 @@ import React from 'react';
 import * as XLSX from 'xlsx';
 import '../App.css';
 
+//TODO: add more error handling. for instance, if the loaded excel sheet doesn't look right, take user through putting in the name of the sheet, the index of the first cell, etc.
 function ExcelReader(props) {
     function readExcel(file) {
         const fileReader = new FileReader();
@@ -20,10 +21,10 @@ function ExcelReader(props) {
             const wb = XLSX.read(bufferArray, { type: 'buffer' });
 
             const worksheet = wb.Sheets[sheetName];
-            console.log('worksheet', worksheet);
+            // console.log('worksheet', worksheet);
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-            console.table('data', data);
+            // console.table('data', data);
 
             let sheetObj = [];
             const MAX = data.length;
