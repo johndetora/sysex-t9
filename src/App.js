@@ -15,6 +15,22 @@ function App() {
     const [collection, setCollection] = useState([]);
     const [viewHelp, setViewHelp] = useState(true);
 
+    // function setStorage() {
+    //     localStorage.setItem('items', JSON.stringify(items));
+    //     console.log(localStorage);
+    // }
+
+    // function getStorage() {
+    //     let retrieve = localStorage.getItem('items');
+
+    //     console.log('retrieved', retrieve);
+    //     setTimeout(() => {
+    //         setItems(retrieve);
+    //     }, 10000);
+    // }
+
+    // localStorageCheck();
+    // localStorage.removeItem('items');
     function addToCollection(e) {
         const value = e.target.value;
         const match = items.filter(item => item.sysex.includes(value));
@@ -117,7 +133,8 @@ function App() {
                 <ExportExcel data={items} />
                 {/* <ExportExcel data={items} /> */}
                 <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} />
-
+                {/* <button onClick={setStorage}>set storage</button>
+                <button onClick={getStorage}>get storage</button> */}
                 <HelpButton help={viewHelp} setHelp={setViewHelp} />
             </div>
             {viewHelp ? <Window /> : ''}
