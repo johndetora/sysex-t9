@@ -2,13 +2,15 @@
 :root {
     --navy: #073642;
     --lightBlue: #586e75;
+    --lightGray: #586e7576;
     --blue: #268bd2;
     --cyan: #2aa198;
+    --lightCyan: #2aa1977c;
     --violet: #6c71c4;
     --red: #dc322f;
     --magenta: #d33682;
     --orange: #cb4b16;
-    --green: #cb4b16;
+    --green: #859900;
     --wheat: #fdf6e3;
     --light: #ffffff9e;
 }
@@ -32,7 +34,7 @@ footer {
 }
 .container {
     margin: auto;
-    max-width: 1400px;
+    width: 90vw;
     margin-top: 2%;
     height: 90%;
 }
@@ -42,22 +44,97 @@ footer {
     flex-direction: row;
 }
 
+/* TABLE STYLING */
+
+table {
+    border-spacing: 0px;
+}
+
+tbody td {
+    max-height: 50px;
+}
+
 .table-header th {
     color: #586e75;
+    color: rgba(255, 255, 255, 0.92);
+    border: 1px solid var(--lightGray);
+    background-color: rgb(216, 127, 97);
     padding: 10px;
 }
 
 .table-container td {
-    border: 1px solid var(--lightBlue);
-    border-radius: 2px;
+    border: 1px solid var(--lightGray);
+    max-height: 100px;
+
     padding: 5px 15px;
-    background-color: var(--light);
     line-height: 20px;
+    overflow: scroll;
+}
+
+.table_row {
+    background-color: var(--light);
+    height: 50px;
+}
+.table_section {
+    background-color: darksalmon;
+}
+
+.table_section td {
+    border: none;
+    border-spacing: 0px;
+    max-height: 50px !important;
 }
 
 th {
     color: var(--blue);
 }
+
+/* Table Cells */
+.msg_name {
+    width: 20px;
+    text-align: center;
+}
+
+.port {
+    width: 20px;
+}
+
+.sysex-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    width: 200px;
+}
+
+.long {
+    width: 35%;
+}
+
+.description {
+    width: 5%;
+}
+
+.behavior {
+    width: 15%;
+    max-height: 100px;
+}
+
+input[type='textarea'] {
+    /* height: 200px; */
+    outline: none;
+    height: 2rem;
+
+    overflow: auto;
+
+    text-align: start;
+    background-color: var(--light);
+    border: none;
+}
+
+/* End of Table Style */
+
 .send-button {
     margin-top: 20px;
     width: 60%;
@@ -82,41 +159,6 @@ th {
 
 .fail {
     color: var(--orange);
-}
-
-/* Cells */
-.msg_name {
-    width: 20px;
-    text-align: center;
-}
-
-.port {
-    width: 20px;
-}
-
-.sysex-cell {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    align-content: center;
-    width: 200px;
-}
-
-.response {
-    width: 500px;
-}
-
-input[type='textarea'] {
-    /* height: 200px; */
-    outline: none;
-    height: 2rem;
-
-    overflow: auto;
-
-    text-align: start;
-    background-color: var(--light);
-    border: none;
 }
 
 /* custom messages */
@@ -162,4 +204,12 @@ input[type='textarea'] {
 
 .window__footer {
     font: 200;
+}
+
+.overflow {
+    max-height: 100px;
+}
+
+.copy {
+    float: right;
 }
