@@ -68,13 +68,18 @@ function App() {
         value.splice(0, 1); // Removes statusbyte, as that is handled by output.send
 
         // converts bytes into integer that's readable by computer,
+
         const message = value.map(el => {
             el = '0x' + el;
             return parseInt(Number(el, 10));
         });
         console.log('sent: (RAW)', message);
         // Send the sysex
+        console.log('output', output);
 
+        if (!message.includes(247)) {
+            return alert('Not a valid SysEx message');
+        }
         if (output) {
             output.send(0xf0, message);
             receiveSysex(target);
@@ -112,14 +117,17 @@ function App() {
     //     console.log(response.length);
     // };
 
+    //TODO: BYTE OVERWRITE
     // Adds response to the items state
     function updateData(target, response) {
         const result = items.map(item => {
             if (item.index === target) {
                 // So that the response isn't appended into the cell every time it's retested
-                if (item.response.indexOf('F0') === -1) {
-                    item.response += response;
-                }
+                //TODO: this means the cell won't get new data!
+                // if (item.response.indexOf('F0') === -1) {
+                item.response = '';
+                item.response += response;
+                // }
                 //TODO: this function is doing multiple things not described by it's name.  consider breaking up
                 // Sets expected length
                 if (!item.expectedLength) {
@@ -132,10 +140,8 @@ function App() {
 
                 if (item.responseLength === item.expectedLength) {
                     item.passFail = 'pass';
-                    console.table(item);
                 }
             }
-            console.table(items);
             return item;
         });
 
@@ -200,13 +206,18 @@ function App() {
                                 <td className='long expected'>
                                     <div className='overflow'>
                                         {data.expected}
-                                        <div>{data.expectedLength ? `Expected: ${data.expectedLength} bytes` : ''}</div>
+
+                                        <div className={data.passFail === 'pass' ? 'pass' : 'fail'}></div>
+                                        <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
+                                            {data.expectedLength ? `Expected: ${data.expectedLength} bytes` : ''}
+                                        </div>
                                     </div>
                                 </td>
                                 {/*the regex is to eliminate the commas */}
                                 <td className='long response'>
                                     <div className='overflow'>
                                         {data.response.match(/[^,*]/gm)}
+                                        <div className={data.passFail === 'pass' ? 'pass' : 'fail'}></div>
                                         <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
                                             {data.responseLength ? `Response: ${data.responseLength} bytes` : ''}
                                         </div>

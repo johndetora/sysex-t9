@@ -5,7 +5,7 @@ function CopyButton({ data, dataLength }) {
     const [copied, setCopied] = useState('copy');
 
     function copyText(e) {
-        const text = `${data.join('')} \n${dataLength} bytes`;
+        const text = `${data.join('')}  ${dataLength} bytes`;
 
         const clipboard = navigator.clipboard;
 
@@ -17,7 +17,7 @@ function CopyButton({ data, dataLength }) {
     }
 
     return (
-        <div>
+        <div className='copy__container'>
             <button className={copied === 'copy' ? 'copy button' : 'copy button button__active'} onClick={copyText}>
                 {copied}
             </button>

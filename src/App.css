@@ -77,6 +77,7 @@ tbody td {
 }
 .table_section {
     background-color: darksalmon;
+    letter-spacing: 2px;
 }
 
 .table_section td {
@@ -208,8 +209,12 @@ input[type='textarea'] {
 
 .overflow {
     max-height: 100px;
+    overflow: scroll;
+    z-index: 0;
 }
 
-.copy {
+.copy__container {
+    margin: auto;
     float: right;
+    z-index: 99;
 }
