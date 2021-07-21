@@ -56,7 +56,7 @@ function App() {
 
     function clickHandler(e) {
         // console.log(e.target.id);
-        console.log(e);
+
         const target = parseInt(e.target.id);
         // TODO: I should be able to just filter based on the target value and not worry about IDs or changing the function to fit the Collection input
         // Finds cell sysex message based on the target ID, which matches the index
@@ -73,9 +73,9 @@ function App() {
             el = '0x' + el;
             return parseInt(Number(el, 10));
         });
-        console.log('sent: (RAW)', message);
+        console.log(`sent ${message} to ${output.name}`);
         // Send the sysex
-        console.log('output', output);
+        // console.log('output', output.name);
 
         if (!message.includes(247)) {
             return alert('Not a valid SysEx message');
@@ -91,6 +91,7 @@ function App() {
     function receiveSysex(target) {
         input.addListener('sysex', 'all', function (e) {
             const reply = [...e.data];
+
             console.log('received (RAW):', reply);
             console.log('response length is', reply.length);
             // compare length function goes here
@@ -124,10 +125,9 @@ function App() {
             if (item.index === target) {
                 // So that the response isn't appended into the cell every time it's retested
                 //TODO: this means the cell won't get new data!
-                // if (item.response.indexOf('F0') === -1) {
-                item.response = '';
-                item.response += response;
-                // }
+                if (item.response.indexOf('F0') === -1) {
+                    item.response += response;
+                }
                 //TODO: this function is doing multiple things not described by it's name.  consider breaking up
                 // Sets expected length
                 if (!item.expectedLength) {
