@@ -9,6 +9,7 @@ const MidiPorts = props => {
 
         let inputPort = WebMidi.inputs[0];
         let outputPort = WebMidi.outputs[0];
+        console.log(err);
         props.setInput(inputPort);
         props.setOutput(outputPort);
     }, true);
