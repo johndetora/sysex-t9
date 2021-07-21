@@ -24,7 +24,8 @@ function ExcelReader(props) {
             // console.log('worksheet', worksheet);
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-            // console.table('data', data);
+            // Uncomment to see how we're parsing the data below
+            console.table('data', data);
 
             let sheetObj = [];
             const MAX = data.length;
@@ -35,8 +36,10 @@ function ExcelReader(props) {
                     index: i,
                     name: data[i][0],
                     port: data[i][1],
-                    sysex: data[i][2],
-                    expected: data[i][3],
+                    test: data[i][2],
+                    behavior: data[i][3],
+                    sysex: data[i][4],
+                    expected: data[i][5],
                     expectedLength: null,
                     response: '',
                     responseLength: null,
@@ -44,15 +47,29 @@ function ExcelReader(props) {
                 });
             }
             props.setItems(sheetObj);
+
             console.log('Worksheet load successful');
+            console.table(sheetObj);
             props.setHelp(!props.help);
         };
+
         fileReader.onerror = e => {
             alert('unknown error. please retry');
             fileReader.abort();
         };
     }
 
+    // function styleTable() {
+    //     let rows = document.querySelectorAll('td');
+    //     console.log('rows', rows);
+    //     for (let i = 0; i < rows.length; i++) {
+    //         if (rows[i].includes()) {
+    //             rows[i].style.backgroundColor = 'red';
+    //         }
+    //     }
+    // }
+
+    // styleTable();
     return (
         <label className='button'>
             Import Sheet

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import MidiPorts from './components/MidiPort';
 import ExcelReader from './components/ReadExcel';
-import Collection from './components/Collection';
 import ExportExcel from './components/ExportExcel';
 import HelpButton from './components/HelpButton';
 import Window from './components/Window';
+import CopyButton from './components/CopyButton';
 import './Header.css';
 import './App.css';
 
@@ -31,6 +31,23 @@ function App() {
 
     // localStorageCheck();
     // localStorage.removeItem('items');
+
+    const [copied, setCopied] = useState('copy');
+
+    function copyText(e) {
+        const target = e.target.parentElement;
+        const text = target.innerText;
+        console.log(target);
+        const clipboard = navigator.clipboard;
+
+        if (!clipboard) {
+            return;
+        }
+
+        clipboard.writeText(text);
+        setCopied('copied');
+    }
+
     function addToCollection(e) {
         const value = e.target.value;
         const match = items.filter(item => item.sysex.includes(value));
@@ -118,6 +135,7 @@ function App() {
                     console.table(item);
                 }
             }
+            console.table(items);
             return item;
         });
 
@@ -127,7 +145,7 @@ function App() {
 
     return (
         <div className='container'>
-            <p className='title'>Sysex T9</p>
+            <p className='title'>Sysex Tester</p>
             <div className='utilities'>
                 <ExcelReader setItems={setItems} setHelp={setViewHelp} help={viewHelp} />
                 <ExportExcel data={items} />
@@ -142,26 +160,32 @@ function App() {
                 <table className='table-container'>
                     <thead>
                         <tr className={items.length > 2 ? 'table-header' : 'invisible'}>
-                            {/*TODO: make these propereties that show up only once loaded */}
-                            <th className='header__item'>Name</th>
+                            <th className='header__item'>Message Type</th>
                             <th>Port</th>
-                            <th>Sysex Message</th>
-                            <th>Expected</th>
+                            <th>Test</th>
+                            <th>Expected Behavior</th>
+                            <th>SysEx to Send</th>
+                            <th>Expected Response</th>
                             <th>Response</th>
-                            {/* <th>Pass/Fail</th> */}
-                            {/* <th>Notes</th> */}
                         </tr>
                     </thead>
                     <tbody>
                         {items.map(data => (
-                            <tr key={data.index} className='table_row'>
+                            <tr key={data.index} className={data.port === undefined ? 'table_section' : 'table_row'}>
                                 <td className='msg_name'>{data.name}</td>
                                 <td className='port'>{data.port}</td>
                                 {/* Sysex Column */}
+                                <td className='description'>{data.test}</td>
+                                <td className='behavior'>{data.behavior}</td>
                                 <td className='sysex-container'>
                                     <div className='sysex-cell'>
                                         {data.sysex}
-                                        <button className='send-button' id={data.index} value={data.sysex} onClick={clickHandler}>
+                                        <button
+                                            className={data.sysex ? 'send-button button' : 'invisible'}
+                                            id={data.index}
+                                            value={data.sysex}
+                                            onClick={clickHandler}
+                                        >
                                             send{' '}
                                         </button>
                                         {/*  Collection Button
@@ -172,20 +196,26 @@ function App() {
                                 </td>
 
                                 {/* Expected */}
-                                <td className='response'>
-                                    {data.expected} {data.expectedLength}
-                                </td>
-                                {/*the regex is to eliminate the commas */}
-                                <td className='response'>
-                                    {data.response.match(/[^,*]/gm)}
-                                    <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
-                                        {data.responseLength ? `Response: ${data.responseLength} bytes` : ''}
+
+                                <td className='long expected'>
+                                    <div className='overflow'>
+                                        {data.expected}
+                                        <div>{data.expectedLength ? `Expected: ${data.expectedLength} bytes` : ''}</div>
                                     </div>
                                 </td>
+                                {/*the regex is to eliminate the commas */}
+                                <td className='long response'>
+                                    <div className='overflow'>
+                                        {data.response.match(/[^,*]/gm)}
+                                        <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
+                                            {data.responseLength ? `Response: ${data.responseLength} bytes` : ''}
+                                        </div>
+                                    </div>
 
-                                {/* <td>
-                                    <input type='textarea' wrap='hard' className='notes'></input>
-                                </td> */}
+                                    {data.responseLength > 1 ? (
+                                        <CopyButton data={data.response.match(/[^,*]/gm)} dataLength={data.responseLength} />
+                                    ) : undefined}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
