@@ -5,6 +5,7 @@ import ExportExcel from './components/ExportExcel';
 import HelpButton from './components/HelpButton';
 import Window from './components/Window';
 import CopyButton from './components/CopyButton';
+import Response from './components/Response';
 import './Header.css';
 import './App.css';
 
@@ -91,10 +92,10 @@ function App() {
     function receiveSysex(target) {
         input.addListener('sysex', 'all', function (e) {
             const reply = [...e.data];
-
-            console.log('received (RAW):', reply);
-            console.log('response length is', reply.length);
-            // compare length function goes here
+            console.clear();
+            console.group('Received');
+            // console.log('received (RAW):', reply);
+            // console.log('response length is', reply.length);
 
             updateData(target, decimalToHex(reply));
         });
@@ -120,33 +121,54 @@ function App() {
 
     //TODO: BYTE OVERWRITE
     // Adds response to the items state
+
+    // function updateData(target, response) {
+    //     const result = items.map(item => {
+    //         if (item.index === target) {
+    //             console.group('Data Set');
+    //             console.log('index', item.index);
+    //             console.log('target', target);
+
+    //             // So that the response isn't appended into the cell every time it's retested
+    //             //TODO: this means the cell won't get new data!
+    //             // if (item.response.indexOf('F0') === -1) {
+    //             item.response = '';
+    //             item.response += response;
+    //             // }
+
+    //             //TODO: this function is doing multiple things not described by it's name.  consider breaking up
+    //             // Sets expected length
+    //             if (!item.expectedLength) {
+    //                 item.expectedLength += item.expected.split(' ').length;
+    //             }
+
+    //             if (!item.responseLength) {
+    //                 item.responseLength += byteComparison(response);
+    //             }
+
+    //             if (item.responseLength === item.expectedLength) {
+    //                 item.passFail = 'pass';
+    //             }
+    //         }
+
+    //         return item;
+    //     });
+
+    //     console.table(result);
+    //     console.log('sysex response: ' + response.join(''));
+    //     setItems(result);
+    // }
+
     function updateData(target, response) {
-        const result = items.map(item => {
-            if (item.index === target) {
-                // So that the response isn't appended into the cell every time it's retested
-                //TODO: this means the cell won't get new data!
-                if (item.response.indexOf('F0') === -1) {
-                    item.response += response;
-                }
-                //TODO: this function is doing multiple things not described by it's name.  consider breaking up
-                // Sets expected length
-                if (!item.expectedLength) {
-                    item.expectedLength += item.expected.split(' ').length;
-                }
-
-                if (!item.responseLength) {
-                    item.responseLength += byteComparison(response);
-                }
-
-                if (item.responseLength === item.expectedLength) {
-                    item.passFail = 'pass';
-                }
-            }
-            return item;
-        });
-
-        console.log('sysex response: ' + response.join(''));
+        let result = [...items];
+        result[target].response = response;
         setItems(result);
+
+        //    setState(result)
+    }
+
+    function setState(newArray) {
+        setItems(prevState => newArray);
     }
 
     return (
@@ -206,8 +228,6 @@ function App() {
                                 <td className='long expected'>
                                     <div className='overflow'>
                                         {data.expected}
-
-                                        <div className={data.passFail === 'pass' ? 'pass' : 'fail'}></div>
                                         <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
                                             {data.expectedLength ? `Expected: ${data.expectedLength} bytes` : ''}
                                         </div>
@@ -216,8 +236,10 @@ function App() {
                                 {/*the regex is to eliminate the commas */}
                                 <td className='long response'>
                                     <div className='overflow'>
-                                        {data.response.match(/[^,*]/gm)}
-                                        <div className={data.passFail === 'pass' ? 'pass' : 'fail'}></div>
+                                        {/* {data.response.match(/[^,*]/gm)} */}
+
+                                        {/* {data.response} */}
+                                        <Response data={data.response} />
                                         <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
                                             {data.responseLength ? `Response: ${data.responseLength} bytes` : ''}
                                         </div>
