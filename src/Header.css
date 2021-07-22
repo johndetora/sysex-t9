@@ -50,3 +50,7 @@ input[type='file'] {
     border-radius: 5px;
     padding: 5px 18px;
 }
+
+/* let msg = items[target].sysex;
+        let byteArray = msg.split(' ');
+        */

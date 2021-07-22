@@ -44,16 +44,18 @@ function App() {
         const target = parseInt(e.target.id);
         // TODO: I should be able to just filter based on the target value and not worry about IDs or changing the function to fit the Collection input
         // Finds cell sysex message based on the target ID, which matches the index
+        let msg = items[target].sysex;
+        let byteArray = msg.split(' ');
 
-        const value = items
-            .filter(cell => cell.index === target)
-            .map(cell => cell.sysex)
-            .join(' ') // converts it into string
-            .split(' '); // converts it into array, but seperated by byte
-        // value.splice(0, 1); // Removes statusbyte, as that is handled by output.send
+        // const value = items
+        //     .filter(cell => cell.index === target)
+        //     .map(cell => cell.sysex)
+        //     .join(' ') // converts it into string
+        //     .split(' '); // converts it into array, but seperated by byte
+        // // value.splice(0, 1); // Removes statusbyte, as that is handled by output.send
 
         // Converts proper hex format, then to decimal so that message can be read by the computer
-        const message = value.map(el => {
+        const message = byteArray.map(el => {
             el = '0x' + el;
             return parseInt(Number(el, 10));
         });
@@ -112,54 +114,50 @@ function App() {
     //TODO: BYTE OVERWRITE
     // Adds response to the items state
 
-    // function updateData(target, response) {
-    //     const result = items.map(item => {
-    //         if (item.index === target) {
-    //             console.group('Data Set');
-    //             console.log('index', item.index);
-    //             console.log('target', target);
-
-    //             // So that the response isn't appended into the cell every time it's retested
-    //             //TODO: this means the cell won't get new data!
-    //             // if (item.response.indexOf('F0') === -1) {
-    //             item.response = '';
-    //             item.response += response;
-    //             // }
-
-    //             //TODO: this function is doing multiple things not described by it's name.  consider breaking up
-    //             // Sets expected length
-    //             if (!item.expectedLength) {
-    //                 item.expectedLength += item.expected.split(' ').length;
-    //             }
-
-    //             if (!item.responseLength) {
-    //                 item.responseLength += byteComparison(response);
-    //             }
-
-    //             if (item.responseLength === item.expectedLength) {
-    //                 item.passFail = 'pass';
-    //             }
-    //         }
-
-    //         return item;
-    //     });
-
-    //     console.table(result);
-    //     console.log('sysex response: ' + response.join(''));
-    //     setItems(result);
-    // }
-
     function updateData(target, response) {
-        let result = [...items];
-        result[target].response = response;
+        const result = items.map(item => {
+            if (item.index === target) {
+                console.group('Data Set');
+                console.log('index', item.index);
+                console.log('target', target);
+
+                // So that the response isn't appended into the cell every time it's retested
+                //TODO: this means the cell won't get new data!
+                if (item.response.indexOf('F0') === -1) {
+                    item.response = '';
+                    item.response += response;
+                }
+
+                //TODO: this function is doing multiple things not described by it's name.  consider breaking up
+                // Sets expected length
+                if (!item.expectedLength) {
+                    item.expectedLength += item.expected.split(' ').length;
+                }
+
+                if (!item.responseLength) {
+                    item.responseLength += byteComparison(response);
+                }
+
+                if (item.responseLength === item.expectedLength) {
+                    item.passFail = 'pass';
+                }
+            }
+
+            return item;
+        });
+
+        console.table(result);
+        console.log('sysex response: ' + response.join(''));
         setItems(result);
-
-        //    setState(result)
     }
 
-    function setState(newArray) {
-        setItems(prevState => newArray);
-    }
+    // function updateData(target, response) {
+    //     let result = [...items];
+    //     result[target].response = response;
+    //     setItems(result);
+
+    //     //    setState(result)
+    // }
 
     return (
         <div className='container'>
@@ -226,10 +224,10 @@ function App() {
                                 {/*the regex is to eliminate the commas */}
                                 <td className='long response'>
                                     <div className='overflow'>
-                                        {/* {data.response.match(/[^,*]/gm)} */}
+                                        {data.response.match(/[^,*]/gm)}
 
                                         {/* {data.response} */}
-                                        <Response data={data.response} />
+                                        {/* <Response data={data.response} /> */}
                                         <div className={data.passFail === 'pass' ? 'pass' : 'fail'}>
                                             {data.responseLength ? `Response: ${data.responseLength} bytes` : ''}
                                         </div>
