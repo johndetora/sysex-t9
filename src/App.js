@@ -64,9 +64,9 @@ function App() {
         const statusByte = message.splice(0, 1);
         const fullMsg = `${statusByte},${message}`;
         // Do not send if output does not include the terminator byte
-        if (!message.includes(247)) {
-            return alert('Not a valid SysEx message');
-        }
+        // if (!message.includes(247)) {
+        // return alert('Not a valid SysEx message');
+        // }
         // Send to output if one is available
         if (output) {
             output.send(statusByte, message);
@@ -218,7 +218,6 @@ function App() {
                                 </td>
 
                                 {/* Expected */}
-
                                 <td className='long expected'>
                                     <div className='overflow'>
                                         {data.expected}
