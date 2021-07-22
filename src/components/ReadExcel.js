@@ -33,7 +33,7 @@ function ExcelReader(props) {
 
             for (let i = start; i < MAX; i++) {
                 sheetObj.push({
-                    index: i,
+                    index: i - start,
                     name: data[i][0],
                     port: data[i][1],
                     test: data[i][2],

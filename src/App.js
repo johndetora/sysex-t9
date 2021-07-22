@@ -33,70 +33,60 @@ function App() {
     // localStorageCheck();
     // localStorage.removeItem('items');
 
-    const [copied, setCopied] = useState('copy');
+    // function addToCollection(e) {
+    //     const value = e.target.value;
+    //     const match = items.filter(item => item.sysex.includes(value));
+    //     setCollection([...collection, match[0]]);
+    // }
 
-    function copyText(e) {
-        const target = e.target.parentElement;
-        const text = target.innerText;
-        console.log(target);
-        const clipboard = navigator.clipboard;
-
-        if (!clipboard) {
-            return;
-        }
-
-        clipboard.writeText(text);
-        setCopied('copied');
-    }
-
-    function addToCollection(e) {
-        const value = e.target.value;
-        const match = items.filter(item => item.sysex.includes(value));
-        setCollection([...collection, match[0]]);
-    }
-
+    // STEP 1: Send Button is clicked and the event is sent here
     function clickHandler(e) {
-        // console.log(e.target.id);
-
         const target = parseInt(e.target.id);
         // TODO: I should be able to just filter based on the target value and not worry about IDs or changing the function to fit the Collection input
         // Finds cell sysex message based on the target ID, which matches the index
+
         const value = items
             .filter(cell => cell.index === target)
             .map(cell => cell.sysex)
             .join(' ') // converts it into string
             .split(' '); // converts it into array, but seperated by byte
-        value.splice(0, 1); // Removes statusbyte, as that is handled by output.send
+        // value.splice(0, 1); // Removes statusbyte, as that is handled by output.send
 
-        // converts bytes into integer that's readable by computer,
-
+        // Converts proper hex format, then to decimal so that message can be read by the computer
         const message = value.map(el => {
             el = '0x' + el;
             return parseInt(Number(el, 10));
         });
-        console.log(`sent ${message} to ${output.name}`);
-        // Send the sysex
-        // console.log('output', output.name);
 
+        // Get the status byte and remove it from the message while storing it in this variable
+        const statusByte = message.splice(0, 1);
+        const fullMsg = `${statusByte},${message}`;
+        // Do not send if output does not include the terminator byte
         if (!message.includes(247)) {
             return alert('Not a valid SysEx message');
         }
+        // Send to output if one is available
         if (output) {
-            output.send(0xf0, message);
-            receiveSysex(target);
+            output.send(statusByte, message);
+            receiveSysex(target, fullMsg); // Full message is sent for easy logging
         } else {
             alert('No MIDI output port selected');
         }
     }
 
-    function receiveSysex(target) {
-        input.addListener('sysex', 'all', function (e) {
+    // STEP 2: Receive Sysex and log results
+    function receiveSysex(target, message) {
+        input.addListener('sysex', 'all', e => {
             const reply = [...e.data];
-            console.clear();
-            console.group('Received');
-            // console.log('received (RAW):', reply);
-            // console.log('response length is', reply.length);
+            // Log I/O
+            //BUG: problem here, I think related to the state
+            if (!reply) alert('No SysEx received. Check MIDI Port');
+            console.group('Success');
+            console.log(`SENT ${message} (${message.length} bytes) to ${output.name} port`);
+            console.log(`RECEIVED ${reply} (${reply.length} bytes) at ${input.name} port`);
+            console.groupEnd('LOG');
 
+            // Update date
             updateData(target, decimalToHex(reply));
         });
     }
