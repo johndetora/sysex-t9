@@ -89,7 +89,9 @@ function App() {
             console.groupEnd('LOG');
 
             // Update date
+            // setTimeout(() => {
             updateData(target, decimalToHex(reply));
+            // }, 1000);
         });
     }
 
@@ -152,11 +154,15 @@ function App() {
     }
 
     // function updateData(target, response) {
-    //     let result = [...items];
-    //     result[target].response = response;
-    //     setItems(result);
-
-    //     //    setState(result)
+    //     setItems(prev => {
+    //         const newItems = prev.map(entry => {
+    //             if (entry.index === target) {
+    //                 entry.response = response;
+    //             }
+    //             return entry;
+    //         });
+    //         return newItems;
+    //     });
     // }
 
     return (
@@ -186,7 +192,7 @@ function App() {
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map(data => (
+                        {items.map((data, index) => (
                             <tr key={data.index} className={data.port === undefined ? 'table_section' : 'table_row'}>
                                 <td className='msg_name'>{data.name}</td>
                                 <td className='port'>{data.port}</td>
@@ -198,7 +204,7 @@ function App() {
                                         {data.sysex}
                                         <button
                                             className={data.sysex ? 'send-button button' : 'invisible'}
-                                            id={data.index}
+                                            id={index}
                                             value={data.sysex}
                                             onClick={clickHandler}
                                         >
