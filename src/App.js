@@ -68,23 +68,24 @@ function App() {
         // return alert('Not a valid SysEx message');
         // }
         // Send to output if one is available
+
         if (output) {
             output.send(statusByte, message);
-            receiveSysex(target, fullMsg); // Full message is sent for easy logging
+            receiveSysex(target); // Full message is sent for easy logging
+            console.log(`SENT ${fullMsg} (${fullMsg.length} bytes) to ${output.name} port`);
         } else {
             alert('No MIDI output port selected');
         }
     }
 
     // STEP 2: Receive Sysex and log results
-    function receiveSysex(target, message) {
+    function receiveSysex(target) {
         input.addListener('sysex', 'all', e => {
             const reply = [...e.data];
             // Log I/O
             //BUG: problem here, I think related to the state
             if (!reply) alert('No SysEx received. Check MIDI Port');
             console.group('Success');
-            console.log(`SENT ${message} (${message.length} bytes) to ${output.name} port`);
             console.log(`RECEIVED ${reply} (${reply.length} bytes) at ${input.name} port`);
             console.groupEnd('LOG');
 
