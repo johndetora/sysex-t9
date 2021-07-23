@@ -15,8 +15,8 @@ function ExcelReader(props) {
                 return;
             }
             // Set variables
-            // const sheetName = prompt('Please enter the name of the sheet');
-            const sheetName = 'SysEx';
+            const sheetName = prompt('Please enter the name of the sheet');
+            // const sheetName = 'SysEx';
             const bufferArray = e.target.result;
             const wb = XLSX.read(bufferArray, { type: 'buffer' });
 
@@ -46,10 +46,11 @@ function ExcelReader(props) {
                     passFail: null,
                 });
             }
+
             props.setItems(sheetObj);
 
             console.log('Worksheet load successful');
-            console.table(sheetObj);
+            console.log(sheetObj);
             props.setHelp(!props.help);
         };
 

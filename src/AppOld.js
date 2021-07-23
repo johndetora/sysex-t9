@@ -11,7 +11,6 @@ import './Header.css';
 import './App.css';
 
 function App() {
-    const [items, setItems] = useState([]);
     const [input, setInput] = useState();
     const [output, setOutput] = useState();
     const [collection, setCollection] = useState([]);
@@ -42,47 +41,136 @@ function App() {
     //     setCollection([...collection, match[0]]);
     // }
 
-    // STEP 1: Send Button is clicked and the event is sent here
+    const testObj = [
+        {
+            index: 0,
+            name: 'Title',
+            test: undefined,
+            behavior: undefined,
+            sysex: 'Zero',
+            expected: undefined,
+            port: undefined,
+            response: '',
+            responseLength: null,
+            passFail: null,
+        },
+        {
+            index: 1,
+            name: 'Foo',
+            test: undefined,
+            behavior: undefined,
+            port: undefined,
+            sysex: 2,
+            expected: undefined,
+            response: '',
+            responseLength: null,
+            passFail: null,
+        },
+        {
+            index: 2,
+            name: 'Bar',
+            test: undefined,
+            behavior: undefined,
+            port: undefined,
+            sysex: 3,
+            expected: undefined,
+            response: '',
+            responseLength: null,
+            passFail: null,
+        },
+        {
+            index: 3,
+            name: 'Baz',
+            test: undefined,
+            port: undefined,
+            behavior: undefined,
+            sysex: 4,
+            expected: undefined,
+            response: '',
+            responseLength: null,
+            passFail: null,
+        },
+        {
+            index: 4,
+            name: 'Go',
+            port: undefined,
+            test: undefined,
+            behavior: undefined,
+            sysex: 5,
+            expected: undefined,
+            response: '',
+            responseLength: null,
+            passFail: null,
+        },
+    ];
+
+    const [items, setItems] = useState(testObj);
     function clickHandler(e) {
-        setCount(count + 1);
-        const target = parseInt(e.target.id);
-        console.log('click target', target);
-        // TODO: I should be able to just filter based on the target value and not worry about IDs or changing the function to fit the Collection input
-        // Finds cell sysex message based on the target ID, which matches the index
-        let msg = items[target].sysex;
-        let byteArray = msg.split(' ');
+        let target = parseInt(e.target.id);
 
-        // const value = items
-        //     .filter(cell => cell.index === target)
-        //     .map(cell => cell.sysex)
-        //     .join(' ') // converts it into string
-        //     .split(' '); // converts it into array, but seperated by byte
-        // // value.splice(0, 1); // Removes statusbyte, as that is handled by output.send
-
-        // Converts proper hex format, then to decimal so that message can be read by the computer
-        const message = byteArray.map(el => {
-            el = '0x' + el;
-            return parseInt(Number(el, 10));
+        testObj[target].response = Date.now();
+        // const test = [...items];
+        // let result = test.map(msg => {
+        //     if (msg.index === target) {
+        //         msg.response = Date.now();
+        //     }
+        // });
+        setItems(prev => {
+            const newItems = prev.map(entry => {
+                if (entry.index === target) {
+                    entry.response = Date.now();
+                    // console.table(items);
+                    // console.log('responseState', responseState);
+                    // setCount(count + 1);
+                }
+                return entry;
+            });
+            target = null;
+            return newItems;
         });
-
-        // Get the status byte and remove it from the message while storing it in this variable
-        const statusByte = message.splice(0, 1);
-        const fullMsg = `${statusByte},${message}`;
-        // Do not send if output does not include the terminator byte
-        // if (!message.includes(247)) {
-        // return alert('Not a valid SysEx message');
-        // }
-        // Send to output if one is available
-
-        if (output) {
-            output.send(statusByte, message);
-            receiveSysex(target); // Full message is sent for easy logging
-
-            console.log(`SENT ${fullMsg} (${fullMsg.length} bytes) to ${output.name} port`);
-        } else {
-            alert('No MIDI output port selected');
-        }
     }
+
+    // // STEP 1: Send Button is clicked and the event is sent here
+    // function clickHandler(e) {
+    //     setCount(count + 1);
+    //     const target = parseInt(e.target.id);
+    //     console.log('click target', target);
+    //     // TODO: I should be able to just filter based on the target value and not worry about IDs or changing the function to fit the Collection input
+    //     // Finds cell sysex message based on the target ID, which matches the index
+    //     let msg = items[target].sysex;
+    //     let byteArray = msg.split(' ');
+
+    //     // const value = items
+    //     //     .filter(cell => cell.index === target)
+    //     //     .map(cell => cell.sysex)
+    //     //     .join(' ') // converts it into string
+    //     //     .split(' '); // converts it into array, but seperated by byte
+    //     // // value.splice(0, 1); // Removes statusbyte, as that is handled by output.send
+
+    //     // Converts proper hex format, then to decimal so that message can be read by the computer
+    //     const message = byteArray.map(el => {
+    //         el = '0x' + el;
+    //         return parseInt(Number(el, 10));
+    //     });
+
+    //     // Get the status byte and remove it from the message while storing it in this variable
+    //     const statusByte = message.splice(0, 1);
+    //     const fullMsg = `${statusByte},${message}`;
+    //     // Do not send if output does not include the terminator byte
+    //     // if (!message.includes(247)) {
+    //     // return alert('Not a valid SysEx message');
+    //     // }
+    //     // Send to output if one is available
+
+    //     if (output) {
+    //         output.send(statusByte, message);
+    //         receiveSysex(target); // Full message is sent for easy logging
+
+    //         console.log(`SENT ${fullMsg} (${fullMsg.length} bytes) to ${output.name} port`);
+    //     } else {
+    //         alert('No MIDI output port selected');
+    //     }
+    // }
 
     // STEP 2: Receive Sysex and log results
     function receiveSysex(target) {
@@ -120,26 +208,26 @@ function App() {
         return message.length;
     }
 
-    // function updateData(target, response) {
-    //     let something = decimalToHex(response); //
+    function updateData(target, response) {
+        let something = decimalToHex(response); //
 
-    //     console.log('update target', target);
-    //     // setItems(sheetObj);
+        console.log('update target', target);
+        // setItems(sheetObj);
 
-    //     setItems(prev => {
-    //         const newItems = prev.map(entry => {
-    //             if (entry.index === target) {
-    //                 entry.response = something;
-    //                 // console.table(items);
-    //                 // console.log('responseState', responseState);
-    //                 // setCount(count + 1);
-    //             }
-    //             return entry;
-    //         });
-    //         target = null;
-    //         return newItems;
-    //     });
-    // }
+        setItems(prev => {
+            const newItems = prev.map(entry => {
+                if (entry.index === target) {
+                    entry.response = something;
+                    // console.table(items);
+                    // console.log('responseState', responseState);
+                    // setCount(count + 1);
+                }
+                return entry;
+            });
+            target = null;
+            return newItems;
+        });
+    }
 
     // const resultTest = response => {
     //     console.log('RESPONSE TEST :');
@@ -149,42 +237,42 @@ function App() {
     //TODO: BYTE OVERWRITE
     // Adds response to the items state
 
-    function updateData(target, response) {
-        const result = items.map(item => {
-            if (item.index === target) {
-                console.group('Data Set');
-                console.log('index', item.index);
-                console.log('target', target);
+    // function updateData(target, response) {
+    //     const result = items.map(item => {
+    //         if (item.index === target) {
+    //             console.group('Data Set');
+    //             console.log('index', item.index);
+    //             console.log('target', target);
 
-                // So that the response isn't appended into the cell every time it's retested
-                //TODO: this means the cell won't get new data!
-                if (item.response.indexOf('F0') === -1) {
-                    item.response = '';
-                    item.response += response;
-                }
+    //             // So that the response isn't appended into the cell every time it's retested
+    //             //TODO: this means the cell won't get new data!
+    //             if (item.response.indexOf('F0') === -1) {
+    //                 item.response = '';
+    //                 item.response += response;
+    //             }
 
-                //TODO: this function is doing multiple things not described by it's name.  consider breaking up
-                // Sets expected length
-                if (!item.expectedLength) {
-                    item.expectedLength += item.expected.split(' ').length;
-                }
+    //             //TODO: this function is doing multiple things not described by it's name.  consider breaking up
+    //             // Sets expected length
+    //             if (!item.expectedLength) {
+    //                 item.expectedLength += item.expected.split(' ').length;
+    //             }
 
-                if (!item.responseLength) {
-                    item.responseLength += byteComparison(response);
-                }
+    //             if (!item.responseLength) {
+    //                 item.responseLength += byteComparison(response);
+    //             }
 
-                if (item.responseLength === item.expectedLength) {
-                    item.passFail = 'pass';
-                }
-            }
+    //             if (item.responseLength === item.expectedLength) {
+    //                 item.passFail = 'pass';
+    //             }
+    //         }
 
-            return item;
-        });
+    //         return item;
+    //     });
 
-        console.table(result);
-        console.log('sysex response: ' + response.join(''));
-        setItems(result);
-    }
+    //     console.table(result);
+    //     console.log('sysex response: ' + response.join(''));
+    //     setItems(result);
+    // }
     // function addButtons() {
     //     const sysCells = document.querySelectorAll('.sysex-container');
     //     let btn = document.createElement('button');
@@ -224,7 +312,7 @@ function App() {
                     </thead>
                     <tbody>
                         {items.map((data, index) => (
-                            <tr key={index} className={data.port === undefined ? 'table_section' : 'table_row'}>
+                            <tr key={index}>
                                 <td className='msg_name'>{data.name}</td>
                                 <td className='port'>{data.port}</td>
                                 {/* Sysex Column */}
