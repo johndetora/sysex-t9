@@ -14,17 +14,19 @@ function ExcelReader(props) {
                 alert('ERROR: Incompatible file type.  Please upload a file with an extension of .xlsx');
                 return;
             }
-            // Set variables
-            // const sheetName = prompt('Please enter the name of the sheet');
-            const sheetName = 'SysEx';
+
+            // const sheetName = 'SysEx';
             const bufferArray = e.target.result;
             const wb = XLSX.read(bufferArray, { type: 'buffer' });
-
-            const worksheet = wb.Sheets[sheetName];
+            // Set variables
+            // const sheetName = prompt('Please enter the name of the sheet');
+            //const worksheet = wb.Sheets[sheetName];
+            const worksheet = wb.Sheets['SysEx'];
             // console.log('worksheet', worksheet);
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-            // console.table('data', data);
+            // Uncomment to see how we're parsing the data below
+            console.table('data', data);
 
             let sheetObj = [];
             const MAX = data.length;
@@ -32,27 +34,44 @@ function ExcelReader(props) {
 
             for (let i = start; i < MAX; i++) {
                 sheetObj.push({
-                    index: i,
+                    index: i - start,
                     name: data[i][0],
                     port: data[i][1],
-                    sysex: data[i][2],
-                    expected: data[i][3],
+                    test: data[i][2],
+                    behavior: data[i][3],
+                    sysex: data[i][4],
+                    expected: data[i][5],
                     expectedLength: null,
                     response: '',
                     responseLength: null,
                     passFail: null,
                 });
             }
+
             props.setItems(sheetObj);
+
             console.log('Worksheet load successful');
+            console.log(sheetObj);
             props.setHelp(!props.help);
         };
+
         fileReader.onerror = e => {
             alert('unknown error. please retry');
             fileReader.abort();
         };
     }
 
+    // function styleTable() {
+    //     let rows = document.querySelectorAll('td');
+    //     console.log('rows', rows);
+    //     for (let i = 0; i < rows.length; i++) {
+    //         if (rows[i].includes()) {
+    //             rows[i].style.backgroundColor = 'red';
+    //         }
+    //     }
+    // }
+
+    // styleTable();
     return (
         <label className='button'>
             Import Sheet
