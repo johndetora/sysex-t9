@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import '../App.css';
 
 //TODO: add more error handling. for instance, if the loaded excel sheet doesn't look right, take user through putting in the name of the sheet, the index of the first cell, etc.
+//TODO: add window component that shows the worksheet names
 function ExcelReader(props) {
+    const [showSheets, setShowSheets] = useState(false);
+    const [sheetNames, setSheetNames] = useState([]);
+
     function readExcel(file) {
         const fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
@@ -19,14 +23,18 @@ function ExcelReader(props) {
             const bufferArray = e.target.result;
             const wb = XLSX.read(bufferArray, { type: 'buffer' });
             // Set variables
+            setSheetNames(wb.SheetNames);
+            // setShowSheets(true);
             // const sheetName = prompt('Please enter the name of the sheet');
             //const worksheet = wb.Sheets[sheetName];
             const worksheet = wb.Sheets['SysEx'];
+
+            // console.log(wb.Sheets);
             // console.log('worksheet', worksheet);
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
             // Uncomment to see how we're parsing the data below
-            console.table('data', data);
+            // console.table('data', data);
 
             let sheetObj = [];
             const MAX = data.length;
@@ -48,10 +56,12 @@ function ExcelReader(props) {
                 });
             }
 
+            // Set state
             props.setItems(sheetObj);
 
+            // Log output
             console.log('Worksheet load successful');
-            console.log(sheetObj);
+            console.table(sheetObj);
             props.setHelp(!props.help);
         };
 
@@ -61,29 +71,27 @@ function ExcelReader(props) {
         };
     }
 
-    // function styleTable() {
-    //     let rows = document.querySelectorAll('td');
-    //     console.log('rows', rows);
-    //     for (let i = 0; i < rows.length; i++) {
-    //         if (rows[i].includes()) {
-    //             rows[i].style.backgroundColor = 'red';
-    //         }
-    //     }
-    // }
-
-    // styleTable();
     return (
-        <label className='button'>
-            Import Sheet
-            <input
-                type='file'
-                className='file'
-                onChange={e => {
-                    const file = e.target.files[0];
-                    readExcel(file);
-                }}
-            />
-        </label>
+        <>
+            {showSheets
+                ? sheetNames.map(sheet => (
+                      <div>
+                          <div>{sheet}</div>
+                      </div>
+                  ))
+                : ''}
+            <label className='button'>
+                Import Sheet
+                <input
+                    type='file'
+                    className='file'
+                    onChange={e => {
+                        const file = e.target.files[0];
+                        readExcel(file);
+                    }}
+                />
+            </label>
+        </>
     );
 }
 

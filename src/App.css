@@ -141,10 +141,6 @@ input[type='textarea'] {
     width: 60%;
 }
 
-.output {
-    margin-left: 20px;
-}
-
 .collection-container {
     border: 1px solid var(--navy);
     padding: 10px;

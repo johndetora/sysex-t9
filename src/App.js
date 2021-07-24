@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MidiPorts from './components/MidiPort';
+import MidiPorts from './components/MidiPorts';
 import ExcelReader from './components/ReadExcel';
 import ExportExcel from './components/ExportExcel';
 import HelpButton from './components/HelpButton';
@@ -158,12 +158,7 @@ function App() {
                                 <td className='sysex-container'>
                                     <div className='sysex-cell'>
                                         {data.sysex}
-                                        <button
-                                            className={data.sysex ? 'send-button button' : 'invisible'}
-                                            id={index}
-                                            // value={data.sysex}
-                                            onClick={clickHandler}
-                                        >
+                                        <button className={data.sysex ? 'send-button button' : 'invisible'} id={index} onClick={clickHandler}>
                                             send{' '}
                                         </button>
                                     </div>
@@ -184,7 +179,6 @@ function App() {
                                             {data.responseLength ? `Response: ${data.responseLength} bytes` : ''}
                                         </div>
                                     </div>
-
                                     {data.responseLength > 1 ? <CopyButton data={data.response} dataLength={data.responseLength} /> : undefined}
                                 </td>
                             </tr>

@@ -3,11 +3,11 @@ import Window from './Window';
 
 function HelpButton({ help, setHelp }) {
     return (
-        <div>
-            <button className='button' onClick={() => setHelp(!help)}>
+        <>
+            <button className='button help-button' onClick={() => setHelp(!help)}>
                 help
             </button>
-        </div>
+        </>
     );
 }
 
