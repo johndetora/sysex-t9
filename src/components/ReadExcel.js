@@ -14,13 +14,14 @@ function ExcelReader(props) {
                 alert('ERROR: Incompatible file type.  Please upload a file with an extension of .xlsx');
                 return;
             }
-            // Set variables
-            const sheetName = prompt('Please enter the name of the sheet');
+
             // const sheetName = 'SysEx';
             const bufferArray = e.target.result;
             const wb = XLSX.read(bufferArray, { type: 'buffer' });
-
-            const worksheet = wb.Sheets[sheetName];
+            // Set variables
+            // const sheetName = prompt('Please enter the name of the sheet');
+            //const worksheet = wb.Sheets[sheetName];
+            const worksheet = wb.Sheets['SysEx'];
             // console.log('worksheet', worksheet);
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 

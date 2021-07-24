@@ -13,11 +13,14 @@ import './App.css';
 function App() {
     const [items, setItems] = useState([]);
     const [input, setInput] = useState();
+    const [inputAccess, setInputAccess] = useState(false);
     const [output, setOutput] = useState();
     const [collection, setCollection] = useState([]);
     const [viewHelp, setViewHelp] = useState(true);
+
     const [count, setCount] = useState(0);
-    const [responseState, setResponseState] = useState();
+    const [responseState, setResponseState] = useState({ target: 0, message: [] });
+    const [targetState, setTargetState] = useState(0);
 
     // function setStorage() {
     //     localStorage.setItem('items', JSON.stringify(items));
@@ -42,9 +45,7 @@ function App() {
     //     setCollection([...collection, match[0]]);
     // }
 
-    // STEP 1: Send Button is clicked and the event is sent here
     function clickHandler(e) {
-        setCount(count + 1);
         const target = parseInt(e.target.id);
         console.log('click target', target);
         // TODO: I should be able to just filter based on the target value and not worry about IDs or changing the function to fit the Collection input
@@ -77,7 +78,7 @@ function App() {
         if (output) {
             output.send(statusByte, message);
             receiveSysex(target); // Full message is sent for easy logging
-
+            console.group('LOG');
             console.log(`SENT ${fullMsg} (${fullMsg.length} bytes) to ${output.name} port`);
         } else {
             alert('No MIDI output port selected');
@@ -102,7 +103,7 @@ function App() {
             // console.log(testObj);
             if (reply) {
                 // return updateData(target, reply);
-                updateData(target, reply);
+                updateData(target, decimalToHex(reply));
             }
         });
     }
@@ -120,26 +121,29 @@ function App() {
         return message.length;
     }
 
-    // function updateData(target, response) {
-    //     let something = decimalToHex(response); //
-
-    //     console.log('update target', target);
-    //     // setItems(sheetObj);
-
-    //     setItems(prev => {
-    //         const newItems = prev.map(entry => {
-    //             if (entry.index === target) {
-    //                 entry.response = something;
-    //                 // console.table(items);
-    //                 // console.log('responseState', responseState);
-    //                 // setCount(count + 1);
-    //             }
-    //             return entry;
-    //         });
-    //         target = null;
-    //         return newItems;
-    //     });
-    // }
+    function updateData(target, response) {
+        input.removeListener('sysex', 'all'); // Remove the event listener so that they aren't created every button press
+        console.log('update target', target);
+        // setitems(sheetobj);
+        setItems(prev => {
+            const newitems = prev.map(entry => {
+                if (entry.index === target) {
+                    entry.response = response;
+                    entry.expectedLength = entry.expected.split(' ').length;
+                    entry.responseLength = byteComparison(response);
+                }
+                if (entry.responseLength === entry.expectedLength) {
+                    entry.passFail = 'pass';
+                }
+                if (entry.responseLength !== entry.expectedLength) {
+                    entry.passFail = 'fail';
+                }
+                return entry;
+            });
+            target = null;
+            return newitems;
+        });
+    }
 
     // const resultTest = response => {
     //     console.log('RESPONSE TEST :');
@@ -149,42 +153,40 @@ function App() {
     //TODO: BYTE OVERWRITE
     // Adds response to the items state
 
-    function updateData(target, response) {
-        const result = items.map(item => {
-            if (item.index === target) {
-                console.group('Data Set');
-                console.log('index', item.index);
-                console.log('target', target);
+    // function updateData(target, response) {
+    //     const result = items.map(item => {
+    //         if (item.index === target) {
+    //             console.group('Data Set');
+    //             console.log('index', item.index);
+    //             console.log('target', target);
 
-                // So that the response isn't appended into the cell every time it's retested
-                //TODO: this means the cell won't get new data!
-                if (item.response.indexOf('F0') === -1) {
-                    item.response = '';
-                    item.response += response;
-                }
+    //             // So that the response isn't appended into the cell every time it's retested
+    //             //TODO: this means the cell won't get new data!
+    //             if (item.response.indexOf('F0') === -1) {
+    //                 item.response = '';
+    //                 item.response += response;
+    //             }
 
-                //TODO: this function is doing multiple things not described by it's name.  consider breaking up
-                // Sets expected length
-                if (!item.expectedLength) {
-                    item.expectedLength += item.expected.split(' ').length;
-                }
+    //             //TODO: this function is doing multiple things not described by it's name.  consider breaking up
+    //             // Sets expected length
+    //             if (!item.expectedLength) {
+    //                 item.expectedLength += item.expected.split(' ').length;
+    //             }
 
-                if (!item.responseLength) {
-                    item.responseLength += byteComparison(response);
-                }
+    //             if (!item.responseLength) {
+    //                 item.responseLength += byteComparison(response);
+    //             }
 
-                if (item.responseLength === item.expectedLength) {
-                    item.passFail = 'pass';
-                }
-            }
+    //
+    //         }
 
-            return item;
-        });
+    //         return item;
+    //     });
 
-        console.table(result);
-        console.log('sysex response: ' + response.join(''));
-        setItems(result);
-    }
+    //     console.table(result);
+    //     console.log('sysex response: ' + response.join(''));
+    //     setItems(result);
+    // }
     // function addButtons() {
     //     const sysCells = document.querySelectorAll('.sysex-container');
     //     let btn = document.createElement('button');
@@ -270,9 +272,7 @@ function App() {
                                         </div>
                                     </div>
 
-                                    {data.responseLength > 1 ? (
-                                        <CopyButton data={data.response.match(/[^,*]/gm)} dataLength={data.responseLength} />
-                                    ) : undefined}
+                                    {data.responseLength > 1 ? <CopyButton data={data.response} dataLength={data.responseLength} /> : undefined}
                                 </td>
                             </tr>
                         ))}
