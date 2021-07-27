@@ -141,6 +141,10 @@ input[type='textarea'] {
     width: 60%;
 }
 
+.send-button:hover {
+    content: 'send';
+}
+
 .collection-container {
     border: 1px solid var(--navy);
     padding: 10px;
@@ -175,7 +179,7 @@ input[type='textarea'] {
 .messages:hover {
     background-color: rgba(176, 215, 222, 0.543);
     color: rgb(111, 165, 95);
-    transition: all 0.2s;
+    /* transition: all 0.2s; */
     border-radius: 5px;
 }
 
@@ -213,4 +217,23 @@ input[type='textarea'] {
     margin: auto;
     float: right;
     z-index: 99;
+}
+
+.sent {
+    border: 1px solid var(--cyan) !important;
+    color: var(--wheat);
+    background-color: var(--cyan) !important;
+    font-weight: bold;
+}
+
+.sent:hover {
+    color: var(--wheat) !important;
+}
+
+.sent:hover span {
+    display: none;
+}
+
+.sent:hover:before {
+    content: 'send';
 }
