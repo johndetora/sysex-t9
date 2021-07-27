@@ -214,3 +214,18 @@ input[type='textarea'] {
     float: right;
     z-index: 99;
 }
+
+/*  Sheet Select */
+
+.sheet-select {
+    background-color: var(--light);
+}
+
+.sheet {
+    cursor: pointer;
+    padding: 3px;
+}
+
+.sheet:hover {
+    background-color: var(--cyan);
+}

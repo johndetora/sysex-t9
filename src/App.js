@@ -14,29 +14,6 @@ function App() {
     const [output, setOutput] = useState();
     const [viewHelp, setViewHelp] = useState(true);
 
-    // function setStorage() {
-    //     localStorage.setItem('items', JSON.stringify(items));
-    //     console.log(localStorage);
-    // }
-
-    // function getStorage() {
-    //     let retrieve = localStorage.getItem('items');
-
-    //     console.log('retrieved', retrieve);
-    //     setTimeout(() => {
-    //         setItems(retrieve);
-    //     }, 10000);
-    // }
-
-    // localStorageCheck();
-    // localStorage.removeItem('items');
-
-    // function addToCollection(e) {
-    //     const value = e.target.value;
-    //     const match = items.filter(item => item.sysex.includes(value));
-    //     setCollection([...collection, match[0]]);
-    // }
-
     function clickHandler(e) {
         const target = parseInt(e.target.id);
         console.log('click target', target);
