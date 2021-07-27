@@ -5,6 +5,7 @@ import ExportExcel from './components/ExportExcel';
 import HelpButton from './components/HelpButton';
 import Window from './components/Window';
 import CopyButton from './components/CopyButton';
+import SendButton from './components/SendButton';
 import './Header.css';
 import './App.css';
 
@@ -14,31 +15,13 @@ function App() {
     const [output, setOutput] = useState();
     const [viewHelp, setViewHelp] = useState(true);
 
-    // function setStorage() {
-    //     localStorage.setItem('items', JSON.stringify(items));
-    //     console.log(localStorage);
-    // }
-
-    // function getStorage() {
-    //     let retrieve = localStorage.getItem('items');
-
-    //     console.log('retrieved', retrieve);
-    //     setTimeout(() => {
-    //         setItems(retrieve);
-    //     }, 10000);
-    // }
-
-    // localStorageCheck();
-    // localStorage.removeItem('items');
-
-    // function addToCollection(e) {
-    //     const value = e.target.value;
-    //     const match = items.filter(item => item.sysex.includes(value));
-    //     setCollection([...collection, match[0]]);
-    // }
-
     function clickHandler(e) {
         const target = parseInt(e.target.id);
+
+        // e.target.innerText = 'sent';
+        // e.target.classList.add('sent');
+        // e.target.classList.add('sent');
+
         console.log('click target', target);
 
         // Finds cell sysex message based on the target ID, which matches the index
@@ -126,7 +109,7 @@ function App() {
 
     return (
         <div className='container'>
-            <p className='title'>Sysex Tester</p>
+            <p className='title'>Sysex Tester v0.2.0</p>
             <div className='utilities'>
                 <ExcelReader setItems={setItems} setHelp={setViewHelp} help={viewHelp} />
                 <ExportExcel data={items} />
@@ -156,11 +139,12 @@ function App() {
                                 <td className='description'>{data.test}</td>
                                 <td className='behavior'>{data.behavior}</td>
                                 <td className='sysex-container'>
-                                    <div className='sysex-cell'>
+                                    <div className={data.sysex ? 'sysex-cell' : 'invisible'}>
                                         {data.sysex}
-                                        <button className={data.sysex ? 'send-button button' : 'invisible'} id={index} onClick={clickHandler}>
+                                        <SendButton id={index} onClick={clickHandler} />
+                                        {/* <button className={data.sysex ? 'send-button button' : 'invisible'} id={index} onClick={clickHandler}>
                                             send{' '}
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </td>
 

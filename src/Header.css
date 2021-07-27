@@ -32,7 +32,7 @@
 }
 
 .button:hover {
-    /* color: var(--cyan); */
+    color: var(--cyan);
     transition: all 200ms;
 }
 select {
