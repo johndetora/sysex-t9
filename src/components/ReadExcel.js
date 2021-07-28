@@ -19,18 +19,14 @@ function ExcelReader(props) {
                 return;
             }
 
-            // const sheetName = 'SysEx';
             const bufferArray = e.target.result;
             const wb = XLSX.read(bufferArray, { type: 'buffer' });
-            // Set variables
             setSheetNames(wb.SheetNames);
             // setShowSheets(true);
-            // const sheetName = prompt('Please enter the name of the sheet');
-            //const worksheet = wb.Sheets[sheetName];
-            const worksheet = wb.Sheets['SysEx'];
+            const sheetName = prompt('Please enter the name of the sheet');
+            const worksheet = wb.Sheets[sheetName];
+            // const worksheet = wb.Sheets['SysEx'];
 
-            // console.log(wb.Sheets);
-            // console.log('worksheet', worksheet);
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
             // Uncomment to see how we're parsing the data below
