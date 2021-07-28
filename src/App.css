@@ -219,6 +219,9 @@ input[type='textarea'] {
     z-index: 99;
 }
 
+.send-text {
+    pointer-events: none;
+}
 .sent {
     border: 1px solid var(--cyan) !important;
     color: var(--wheat);

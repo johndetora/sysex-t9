@@ -13,7 +13,7 @@ function SendButton(props) {
                     setSent(true);
                 }}
             >
-                <span>{sent ? 'sent' : 'send'}</span>
+                <span className='send-text'>{sent ? 'sent' : 'send'}</span>
             </button>
         </>
     );

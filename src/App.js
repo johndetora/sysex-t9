@@ -16,13 +16,14 @@ function App() {
     const [viewHelp, setViewHelp] = useState(true);
 
     function clickHandler(e) {
+        console.log('test', e);
         const target = parseInt(e.target.id);
 
         // e.target.innerText = 'sent';
         // e.target.classList.add('sent');
         // e.target.classList.add('sent');
 
-        console.log('click target', target);
+        // console.log('click target', target);
 
         // Finds cell sysex message based on the target ID, which matches the index
         let msg = items[target].sysex;
@@ -85,7 +86,6 @@ function App() {
 
     function updateData(target, response) {
         input.removeListener('sysex', 'all'); // Remove the event listener so that they aren't created every button press
-        console.log('update target', target);
 
         setItems(prev => {
             const newitems = prev.map(entry => {
