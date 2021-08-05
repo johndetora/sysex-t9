@@ -1,35 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-function Monitor({ input, output, hex }) {
+function Monitor({ input, output, hex, allPorts }) {
     const [log, setLog] = useState([]);
     const allMessages = [];
 
     function logData() {
         input.addListener('midimessage', 'all', e => {
             const reply = hex([...e.data]);
-
-            // console.log(e.data);
-            // setLog(prev => [...prev], reply);
-            // setLog(prev => [...prev], reply);
             allMessages.push({ time: e.timestamp, message: reply, port: e.target.name });
-
-            // console.log(reply);
-
             setLog([...allMessages]);
-            console.log(e.target.name);
-            // console.log('log', log);
-
-            // console.log(e);
-
-            // // Log I/O
-            // if (!reply) alert('No SysEx received. Check MIDI Port');
-            // // console.group('Success');
-            // console.log(`RECEIVED ${reply} (${reply.length} bytes) at ${input.name} port`);
-            // console.groupEnd('LOG');
-
-            // if (reply) {
-            //     updateData(target, decimalToHex(reply));
-            // }
         });
     }
 
