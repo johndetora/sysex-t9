@@ -7,6 +7,7 @@ const MidiPorts = props => {
         if (err) alert('WebMidi could not be enabled.', err);
         let inputPort = WebMidi.inputs[0]; //WebMidi.getInputByName(inputEl.value);
         let outputPort = WebMidi.outputs[0];
+        props.setAll([[...WebMidi.inputs], [...WebMidi.outputs]]);
         props.setInput(inputPort);
         props.setOutput(outputPort);
     }, true);

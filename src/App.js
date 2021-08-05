@@ -19,6 +19,7 @@ function App() {
     const [items, setItems] = useState([]);
     const [input, setInput] = useState();
     const [output, setOutput] = useState();
+    const [allPorts, setAllPorts] = useState([]);
     const [viewHelp, setViewHelp] = useState(true);
 
     function clickHandler(e) {
@@ -119,7 +120,7 @@ function App() {
             <div className='utilities'>
                 <ExcelReader setItems={setItems} setHelp={setViewHelp} help={viewHelp} />
                 <ExportExcel data={items} />
-                <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} />
+                <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} setAll={setAllPorts} />
                 <HelpButton help={viewHelp} setHelp={setViewHelp} />
             </div>
             {viewHelp ? <Window /> : ''}
@@ -176,7 +177,7 @@ function App() {
                     </tbody>
                 </table>
             </div>
-            {input ? <Monitor input={input} output={output} hex={decimalToHex} /> : ''}
+            {input ? <Monitor input={input} output={output} hex={decimalToHex} allPorts={allPorts} /> : ''}
             <footer>© Copyright 2021 John DeTora. All rights reserved.</footer>
         </div>
     );
