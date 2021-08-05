@@ -6,8 +6,14 @@ import HelpButton from './components/HelpButton';
 import Window from './components/Window';
 import CopyButton from './components/CopyButton';
 import SendButton from './components/SendButton';
+import Monitor from './components/Monitor';
 import './Header.css';
 import './App.css';
+import './Monitor.css';
+
+//TODO: move button styling to own file, change import order to remove !important flags
+//TODO: error handling for if no sysex, or remove sysex button if no data
+//TODO: clear response and reset sent state
 
 function App() {
     const [items, setItems] = useState([]);
@@ -170,6 +176,7 @@ function App() {
                     </tbody>
                 </table>
             </div>
+            {input ? <Monitor input={input} output={output} hex={decimalToHex} /> : ''}
             <footer>© Copyright 2021 John DeTora. All rights reserved.</footer>
         </div>
     );

@@ -219,6 +219,7 @@ input[type='textarea'] {
     z-index: 99;
 }
 
+/* Send BUTTON */
 .send-text {
     pointer-events: none;
 }
@@ -233,6 +234,10 @@ input[type='textarea'] {
     color: var(--wheat) !important;
 }
 
+button:active {
+    font-weight: bold;
+    border: 1px solid var(--cyan);
+}
 .sent:hover span {
     display: none;
 }
