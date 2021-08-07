@@ -63,9 +63,11 @@ function App() {
     }
 
     function receiveSysex(target) {
+        clean();
         input.addListener('sysex', 'all', e => {
-            console.log(e);
+            console.log('TARGET', target);
             const reply = [...e.data];
+
             // Log I/O
             if (!reply) alert('No SysEx received. Check MIDI Port');
             // console.group('Success');
@@ -75,9 +77,14 @@ function App() {
             if (reply) {
                 updateData(target, decimalToHex(reply));
             }
+            return;
         });
     }
 
+    function clean() {
+        console.groupEnd('LOG');
+        input.removeListener('sysex', 'all'); // Remove the event listener so that they aren't created every button press
+    }
     function decimalToHex(reply) {
         const converter = reply.map(el => {
             el = el.toString(16) + ' ';
@@ -92,8 +99,6 @@ function App() {
     }
 
     function updateData(target, response) {
-        input.removeListener('sysex', 'all'); // Remove the event listener so that they aren't created every button press
-
         setItems(prev => {
             const newitems = prev.map(entry => {
                 if (entry.index === target) {

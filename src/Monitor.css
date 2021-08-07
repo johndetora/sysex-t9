@@ -22,7 +22,8 @@
     padding: 10px;
     margin: auto;
     height: 80%;
-    display: block;
+    display: flex;
+    flex-direction: column;
     background-color: var(--light);
     overflow: scroll;
 }

@@ -9,25 +9,35 @@ function Monitor({ input, output, hex, allPorts }) {
     const allOutputs = allPorts[1];
 
     function logData() {
-        input.addListener('midimessage', 'all', e => {
-            const reply = hex([...e.data]);
-            const timestamp = parseInt(e.timestamp);
-            allMessages.push({ time: timestamp, message: reply, port: e.target.name });
-            setLog([...allMessages]);
+        allInputs.forEach(inp => {
+            inp.addListener('midimessage', 'all', e => {
+                const reply = hex([...e.data]);
+                const timestamp = parseInt(e.timestamp);
+                allMessages.push({ time: timestamp, message: reply, port: e.target.name });
+                setLog([...allMessages]);
+                logScroll();
+            });
         });
+    }
+
+    // Makes the log scroll to the bottom automatically
+    function logScroll() {
+        let logEl = document.querySelector('.monitor-content');
+        logEl.scrollTop = logEl.scrollHeight;
     }
 
     // input.removeListener('midimessage', 'all');
     useEffect(() => {
         console.log('render');
         logData();
+
         return () => {
             input.removeListener('midimessage', 'all');
             console.log('unmount');
         };
     }, [input]);
 
-    console.log(allPorts);
+    // console.log(allPorts);
     return (
         <div className='monitor-container'>
             <span className='monitor-title'>MIDI MONITOR</span>
@@ -44,7 +54,6 @@ function Monitor({ input, output, hex, allPorts }) {
                     <div className='midi-message' key={msg.time}>
                         <div>{msg.port}</div>
                         <div>{msg.message}</div>
-
                         <div>{msg.time}</div>
                     </div>
                 ))}
