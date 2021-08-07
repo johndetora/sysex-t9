@@ -9,15 +9,40 @@ function Monitor({ input, output, hex, allPorts }) {
     const allOutputs = allPorts[1];
 
     function logData() {
-        allInputs.forEach(inp => {
+        allInputs.forEach((inp, index) => {
             inp.addListener('midimessage', 'all', e => {
                 const reply = hex([...e.data]);
                 const timestamp = parseInt(e.timestamp);
-                allMessages.push({ time: timestamp, message: reply, port: e.target.name });
+                const name = e.target.name;
+                allMessages.push({ port: e.target.name, time: timestamp, message: reply });
+                // setLog([...allMessages]);
+
+                // console.table(allMessages);
                 setLog([...allMessages]);
+                console.log(allMessages);
                 logScroll();
+                // setGroups();
             });
         });
+    }
+    function setGroups() {
+        const result = [];
+        const grouped = allMessages.reduce((groupedPorts, message) => {
+            const name = message.port;
+            if (groupedPorts[name] == null) groupedPorts[name] = [];
+            groupedPorts[name].push({ time: message.time, message: message.message });
+            return groupedPorts;
+        }, {});
+
+        // names.map(el => {
+        for (const [key, value] of Object.entries(grouped)) {
+            // console.log(`${key}: ${value}`);
+            result.push({ name: key, messages: value });
+        }
+        console.log(result);
+        setLog(result);
+        // console.log(names);
+        // setLog(grouped);
     }
 
     // Makes the log scroll to the bottom automatically
@@ -50,13 +75,15 @@ function Monitor({ input, output, hex, allPorts }) {
                 {/* <span>{log}</span> */}
             </div>
             <div className='monitor-content'>
-                {log.map(msg => (
+                {}
+
+                {/* {log.map(msg => (
                     <div className='midi-message' key={msg.time}>
                         <div>{msg.port}</div>
                         <div>{msg.message}</div>
                         <div>{msg.time}</div>
                     </div>
-                ))}
+                ))} */}
             </div>
         </div>
     );
