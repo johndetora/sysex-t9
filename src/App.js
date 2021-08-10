@@ -186,7 +186,18 @@ function App() {
                         ))}
                     </tbody>
                 </table>
-                {input && showMonitor ? <Monitor input={input} output={output} hex={decimalToHex} allPorts={allPorts} /> : ''}
+                {input && showMonitor ? (
+                    <Monitor
+                        input={input}
+                        output={output}
+                        hex={decimalToHex}
+                        allPorts={allPorts}
+                        showMonitor={showMonitor}
+                        setShowMonitor={setShowMonitor}
+                    />
+                ) : (
+                    ''
+                )}
             </div>
 
             <footer>© Copyright 2021 John DeTora. All rights reserved.</footer>

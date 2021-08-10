@@ -3,7 +3,7 @@ import noteTranslator from './NoteTranslator';
 
 //TODO: make the monitor show every midi device and port then have them clickable to show or hide different ports
 // I can filter out the log data based on port name, and it matching the columns
-function Monitor({ input, output, hex, allPorts }) {
+function Monitor({ input, output, hex, allPorts, showMonitor, setShowMonitor }) {
     const [log, setLog] = useState([]);
     const [inputPorts, setInputPorts] = useState(allPorts[0]);
     const [availablePorts, setAvailablePorts] = useState(allPorts[0]);
@@ -87,7 +87,9 @@ function Monitor({ input, output, hex, allPorts }) {
     // console.log(allPorts);
     return (
         <div className='monitor-container'>
-            <div className='monitor-title'>MIDI MONITOR</div>
+            <button className='button monitor-title' onClick={() => setShowMonitor(!showMonitor)}>
+                MIDI MONITOR
+            </button>
 
             {/* <span className='port-select-container'>
                 Add Port:
@@ -115,9 +117,13 @@ function Monitor({ input, output, hex, allPorts }) {
                                     return (
                                         <div className='midi-message' key={msg.time}>
                                             {/* <div>{msg.port}</div> */}
-                                            <div>{msg.message}</div>
-                                            <div>{`(${noteTranslator(msg.message[1])})`}</div>
-                                            <div>{msg.time}</div>
+                                            <div id='midi-input-msg'>{msg.message}</div>
+                                            {msg.message.length === 3 ? (
+                                                <div id='midi-input-note'>{`( ${noteTranslator(msg.message[1])} )`}</div>
+                                            ) : (
+                                                <div></div>
+                                            )}
+                                            <div id='midi-input-time'>{msg.time}</div>
                                         </div>
                                     );
                                 }
