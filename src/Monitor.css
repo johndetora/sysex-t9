@@ -1,37 +1,53 @@
 .monitor-container {
     z-index: 10;
-    width: 100%;
+
     height: 300px;
-    border: 1px solid gray;
-    position: fixed;
-    bottom: -15px;
-    left: 0px;
-}
-
-.monitor-ports {
-    display: flex;
-    flex-direction: row;
-}
-
-.midi-port {
-    padding: 3px;
-    margin: auto;
+    width: 90%;
     border: 1px solid gray;
     border-radius: 5px;
-    cursor: pointer;
-    background-color: white;
+    border-bottom: none;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color: var(--wheat);
+    position: fixed;
+    bottom: -2px;
+
+    display: flex;
+    flex-direction: column;
 }
+
 .monitor-content {
     width: 90%;
     padding: 10px;
     margin: auto;
     height: 80%;
     display: flex;
+    flex-direction: row;
+    background-color: var(--light);
+}
+.monitor-title {
+    padding: 10px;
+    margin: auto;
+}
+
+.monitor-column {
+    border: 1px solid var(--cyan);
+    border-radius: 5px;
+
+    display: flex;
     flex-direction: column;
-    background-color: white;
     overflow: scroll;
 }
 
+.midi-port {
+    padding: 3px;
+
+    top: 0px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--light);
+}
 .midi-message {
     display: flex;
 }

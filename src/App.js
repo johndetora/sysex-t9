@@ -21,6 +21,7 @@ function App() {
     const [output, setOutput] = useState();
     const [allPorts, setAllPorts] = useState([]);
     const [viewHelp, setViewHelp] = useState(true);
+    const [showMonitor, setShowMonitor] = useState(true);
 
     function clickHandler(e) {
         console.log('test', e);
@@ -121,11 +122,14 @@ function App() {
 
     return (
         <div className='container'>
-            <p className='title'>Sysex Tester v0.2.0</p>
+            <p className='title'>Sysex Tester v0.2.1</p>
             <div className='utilities'>
                 <ExcelReader setItems={setItems} setHelp={setViewHelp} help={viewHelp} />
                 <ExportExcel data={items} />
                 <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} setAll={setAllPorts} />
+                <button className='button' onClick={() => setShowMonitor(!showMonitor)}>
+                    MIDI MONITOR
+                </button>
                 <HelpButton help={viewHelp} setHelp={setViewHelp} />
             </div>
             {viewHelp ? <Window /> : ''}
@@ -181,8 +185,9 @@ function App() {
                         ))}
                     </tbody>
                 </table>
+                {input && showMonitor ? <Monitor input={input} output={output} hex={decimalToHex} allPorts={allPorts} /> : ''}
             </div>
-            {input ? <Monitor input={input} output={output} hex={decimalToHex} allPorts={allPorts} /> : ''}
+
             <footer>© Copyright 2021 John DeTora. All rights reserved.</footer>
         </div>
     );

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import noteTranslator from './NoteTranslator';
 
 //TODO: make the monitor show every midi device and port then have them clickable to show or hide different ports
 // I can filter out the log data based on port name, and it matching the columns
@@ -19,7 +20,7 @@ function Monitor({ input, output, hex, allPorts }) {
 
                 // console.table(allMessages);
                 setLog([...allMessages]);
-                console.log(allMessages);
+                // console.log(allMessages);
                 // console.log(allMessages);
                 logScroll();
                 // setGroups();
@@ -49,8 +50,8 @@ function Monitor({ input, output, hex, allPorts }) {
 
     // Makes the log scroll to the bottom automatically
     function logScroll() {
-        let logEl = document.querySelector('.monitor-content');
-        logEl.scrollTop = logEl.scrollHeight;
+        let logEl = document.querySelectorAll('.monitor-column');
+        logEl.forEach(col => (col.scrollTop = col.scrollHeight));
     }
 
     // input.removeListener('midimessage', 'all');
@@ -67,23 +68,43 @@ function Monitor({ input, output, hex, allPorts }) {
     // console.log(allPorts);
     return (
         <div className='monitor-container'>
-            <span className='monitor-title'>MIDI MONITOR</span>
-            <div className='monitor-ports'>
-                {/* {allInputs.map(port => (
-                    <div className='midi-port' key={port.id}>
-                        {port.name}
-                    </div>
-                ))} */}
-                {/* <span>{log}</span> */}
-            </div>
+            <div className='monitor-title'>MIDI MONITOR</div>
+
             <div className='monitor-content'>
-                {log.map(msg => (
-                    <div className='midi-message' key={msg.time}>
-                        <div>{msg.port}</div>
-                        <div>{msg.message}</div>
-                        <div>{msg.time}</div>
+                {/* 
+                The following maps all available midi ports and creates a column 
+                of messages if the message's port property matches one of the inputs
+                
+            
+                */}
+                {allInputs.map(port => (
+                    <div key={port.id} className='monitor-column'>
+                        {log.map(msg => {
+                            if (msg.port === port.name) {
+                                return (
+                                    <div className='midi-message' key={msg.time}>
+                                        <div>{msg.port}</div>
+                                        <div>{msg.message}</div>
+                                        <div>{`(${noteTranslator(msg.message[1])})`}</div>
+                                        <div>{msg.time}</div>
+                                    </div>
+                                );
+                            }
+                            return '';
+                        })}
                     </div>
                 ))}
+
+                {/* <div className='monitor-column'>
+                    {log.map(msg => (
+                        <div className='midi-message' key={msg.time}>
+                            <div>{msg.port}</div>
+                            <div>{msg.message}</div>
+                            <div>{`(${msg.message[1]})`}</div>
+                            <div>{msg.time}</div>
+                        </div>
+                    ))}
+                </div> */}
             </div>
         </div>
     );
