@@ -14,6 +14,7 @@ import './Monitor.css';
 //TODO: move button styling to own file, change import order to remove !important flags
 //TODO: error handling for if no sysex, or remove sysex button if no data
 //TODO: clear response and reset sent state
+//TODO: make midi monitor button in the monitor also close it
 
 function App() {
     const [items, setItems] = useState([]);
