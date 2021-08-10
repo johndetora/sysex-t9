@@ -13,13 +13,14 @@ function Monitor({ input, output, hex, allPorts }) {
             inp.addListener('midimessage', 'all', e => {
                 const reply = hex([...e.data]);
                 const timestamp = parseInt(e.timestamp);
-                const name = e.target.name;
+                // const name = e.target.name;
                 allMessages.push({ port: e.target.name, time: timestamp, message: reply });
                 // setLog([...allMessages]);
 
                 // console.table(allMessages);
                 setLog([...allMessages]);
                 console.log(allMessages);
+                // console.log(allMessages);
                 logScroll();
                 // setGroups();
             });
@@ -35,12 +36,13 @@ function Monitor({ input, output, hex, allPorts }) {
         }, {});
 
         // names.map(el => {
-        for (const [key, value] of Object.entries(grouped)) {
-            // console.log(`${key}: ${value}`);
-            result.push({ name: key, messages: value });
-        }
-        console.log(result);
-        setLog(result);
+        // for (const [key, value] of Object.entries(grouped)) {
+        //     // console.log(`${key}: ${value}`);
+        //     result.push({ name: key, messages: value });
+        // }
+        // console.log(result);
+        console.log(grouped);
+        // setLog(grouped);
         // console.log(names);
         // setLog(grouped);
     }
@@ -67,23 +69,21 @@ function Monitor({ input, output, hex, allPorts }) {
         <div className='monitor-container'>
             <span className='monitor-title'>MIDI MONITOR</span>
             <div className='monitor-ports'>
-                {allInputs.map(port => (
+                {/* {allInputs.map(port => (
                     <div className='midi-port' key={port.id}>
                         {port.name}
                     </div>
-                ))}
+                ))} */}
                 {/* <span>{log}</span> */}
             </div>
             <div className='monitor-content'>
-                {}
-
-                {/* {log.map(msg => (
+                {log.map(msg => (
                     <div className='midi-message' key={msg.time}>
                         <div>{msg.port}</div>
                         <div>{msg.message}</div>
                         <div>{msg.time}</div>
                     </div>
-                ))} */}
+                ))}
             </div>
         </div>
     );
