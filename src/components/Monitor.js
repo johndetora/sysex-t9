@@ -5,6 +5,8 @@ import noteTranslator from './NoteTranslator';
 // I can filter out the log data based on port name, and it matching the columns
 function Monitor({ input, output, hex, allPorts }) {
     const [log, setLog] = useState([]);
+    const [inputPorts, setInputPorts] = useState(allPorts[0]);
+    const [availablePorts, setAvailablePorts] = useState(allPorts[0]);
     const allMessages = [];
     const allInputs = allPorts[0];
     const allOutputs = allPorts[1];
@@ -58,18 +60,43 @@ function Monitor({ input, output, hex, allPorts }) {
     useEffect(() => {
         console.log('render');
         logData();
-
         return () => {
             input.removeListener('midimessage', 'all');
             console.log('unmount');
         };
     }, [input]);
 
+    function clickHandler(e) {
+        console.log(e.target.id);
+        const target = e.target.id;
+        setInputPorts(prev => prev.filter(port => port.name !== target));
+        console.log(inputPorts);
+    }
+
+    function selectHandler(e) {
+        console.log(e.target.value);
+        console.log(allPorts);
+        const target = e.target.value;
+        setInputPorts(
+            prev => [...prev],
+            allInputs.filter(port => port.name === target)
+        );
+    }
+
+    const classColors = ['cyan', 'violet', 'magenta', 'orange'];
     // console.log(allPorts);
     return (
         <div className='monitor-container'>
             <div className='monitor-title'>MIDI MONITOR</div>
 
+            {/* <span className='port-select-container'>
+                Add Port:
+                <select className='port-select' onChange={selectHandler}>
+                    {availablePorts.map(port => (
+                        <option key={port.id}>{port.name}</option>
+                    ))}
+                </select>
+            </span> */}
             <div className='monitor-content'>
                 {/* 
                 The following maps all available midi ports and creates a column 
@@ -77,21 +104,26 @@ function Monitor({ input, output, hex, allPorts }) {
                 
             
                 */}
-                {allInputs.map(port => (
-                    <div key={port.id} className='monitor-column'>
-                        {log.map(msg => {
-                            if (msg.port === port.name) {
-                                return (
-                                    <div className='midi-message' key={msg.time}>
-                                        <div>{msg.port}</div>
-                                        <div>{msg.message}</div>
-                                        <div>{`(${noteTranslator(msg.message[1])})`}</div>
-                                        <div>{msg.time}</div>
-                                    </div>
-                                );
-                            }
-                            return '';
-                        })}
+                {inputPorts.map((port, index) => (
+                    <div key={port.id} className='columns-container'>
+                        <div id={port.name} className={`midi-port ${classColors[index]}`}>
+                            {port.name}
+                        </div>
+                        <div key={port.id} className='monitor-column'>
+                            {log.map(msg => {
+                                if (msg.port === port.name) {
+                                    return (
+                                        <div className='midi-message' key={msg.time}>
+                                            {/* <div>{msg.port}</div> */}
+                                            <div>{msg.message}</div>
+                                            <div>{`(${noteTranslator(msg.message[1])})`}</div>
+                                            <div>{msg.time}</div>
+                                        </div>
+                                    );
+                                }
+                                return '';
+                            })}
+                        </div>
                     </div>
                 ))}
 
