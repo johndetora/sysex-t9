@@ -123,7 +123,7 @@ function App() {
 
     return (
         <div className='container'>
-            <p className='title'>Sysex Tester v0.2.1</p>
+            <p className='title'>Sysex Tester v0.3.0</p>
             <div className='utilities'>
                 <ExcelReader setItems={setItems} setHelp={setViewHelp} help={viewHelp} />
                 <ExportExcel data={items} />
@@ -200,7 +200,7 @@ function App() {
                 )}
             </div>
 
-            <footer>© Copyright 2021 John DeTora. All rights reserved.</footer>
+            {/* <footer>© Copyright 2021 John DeTora. All rights reserved.</footer> */}
         </div>
     );
 }

@@ -13,6 +13,7 @@
     --green: #859900;
     --wheat: #fdf6e3;
     --light: #ffffff9e;
+    --lightO: #fefcf4;
 }
 
 html {
@@ -191,7 +192,6 @@ input[type='textarea'] {
     background-color: var(--light);
     border: 1px solid var(--lightBlue);
     border-radius: 5px;
-
     margin: auto;
     display: block;
 
@@ -247,4 +247,49 @@ button:active {
 
 .sent:hover:before {
     content: 'send';
+}
+
+.sheet-select-overlay {
+    height: 100%;
+    width: 95%;
+    z-index: 999;
+    position: absolute;
+    top: 0px;
+    margin: auto;
+
+    border: 1px solid var(--lightBlue);
+
+    background-color: var(--lightO);
+}
+
+.sheet-select-overlay h2 {
+    text-align: center;
+    margin-top: 10%;
+}
+.sheet-container {
+    margin: 5% auto;
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: space-evenly;
+}
+
+.sheet {
+    width: 100px;
+    height: 50px;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--lightBlue);
+    background-color: var(--light);
+    transition: all 500ms;
+    margin: 10px;
+}
+.sheet:hover {
+    background-color: var(--cyan);
+    color: white;
 }

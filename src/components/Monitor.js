@@ -88,7 +88,7 @@ function Monitor({ input, output, hex, allPorts, showMonitor, setShowMonitor }) 
     return (
         <div className='monitor-container'>
             <button className='button monitor-title' onClick={() => setShowMonitor(!showMonitor)}>
-                MIDI Monitor <span class='orange'> x</span>
+                MIDI Monitor <span className='orange'> x</span>
             </button>
 
             {/* <span className='port-select-container'>

@@ -2,12 +2,13 @@
     z-index: 10;
     height: 40%;
     width: 90%;
-    border: 1px solid var(--lightGray);
+    border: 1px solid var(--lightBlue);
     border-radius: 5px;
     border-bottom: none;
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
-    background-color: var(--wheat);
+
+    background-color: var(--lightO);
     position: fixed;
 
     bottom: 0px;
@@ -27,7 +28,7 @@
 
 .monitor-content {
     width: 95%;
-    background-color: var(--light);
+    /* background-color: var(--light); */
     border-radius: 5px;
     padding: 1rem;
     margin: 4px auto;
