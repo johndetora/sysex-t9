@@ -88,7 +88,7 @@ function Monitor({ input, output, hex, allPorts, showMonitor, setShowMonitor }) 
     return (
         <div className='monitor-container'>
             <button className='button monitor-title' onClick={() => setShowMonitor(!showMonitor)}>
-                MIDI MONITOR
+                MIDI Monitor <span class='orange'> x</span>
             </button>
 
             {/* <span className='port-select-container'>
@@ -111,7 +111,7 @@ function Monitor({ input, output, hex, allPorts, showMonitor, setShowMonitor }) 
                         <div id={port.name} className={`midi-port ${classColors[index]}`}>
                             {port.name}
                         </div>
-                        <div key={port.id} className='monitor-column'>
+                        <div key={port.id} className={`monitor-column`}>
                             {log.map(msg => {
                                 if (msg.port === port.name) {
                                     return (
