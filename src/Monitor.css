@@ -2,6 +2,8 @@
     z-index: 10;
     height: 40%;
     width: 90%;
+
+    min-width: 810px;
     border: 1px solid var(--lightBlue);
     border-radius: 5px;
     border-bottom: none;
@@ -37,31 +39,34 @@
     display: flex;
     flex-direction: row;
 
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .monitor-column {
     background-color: var(--light);
     border: 1px solid var(--lightBlue);
+
     border-radius: 5px;
     border-top: none;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
+    margin: 0 7px;
     height: 92%;
-    min-width: 180px;
-    max-width: 400px;
+    min-width: 200px;
+    max-width: 420px;
+
     min-height: 220px;
     padding: 2px;
     display: flex;
     flex-direction: column;
     overflow: scroll;
-    align-content: space-around;
+    align-content: center;
 }
 
 .midi-port {
     padding: 5px;
     text-align: center;
-    margin: auto;
+    margin: 0 7px;
     top: 0px;
     border: 1px solid;
     border-radius: 5px;
