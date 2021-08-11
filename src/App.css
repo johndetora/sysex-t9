@@ -278,6 +278,7 @@ button:active {
     margin: auto;
     width: 50%;
     height: 40%;
+    min-height: 350px;
     padding: 1rem;
     border: 2px solid var(--lightBlue);
     border-radius: 5px;
