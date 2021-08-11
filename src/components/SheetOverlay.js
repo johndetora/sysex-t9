@@ -1,8 +1,8 @@
 import React from 'react';
 
-function SheetOverlay({ showSheets, sheetNames, parseSheet }) {
+function SheetOverlay({ setShowSheets, showSheets, sheetNames, parseSheet }) {
     return (
-        <div className='sheet-select-overlay'>
+        <div className='sheet-select-overlay' onClick={e => setShowSheets(!showSheets)}>
             <h2>Please select a sheet to load:</h2>
             <div className='sheet-container'>
                 {showSheets

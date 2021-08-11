@@ -77,7 +77,7 @@ function ExcelReader(props) {
 
     return (
         <>
-            {showSheets ? <SheetOverlay showSheets={showSheets} sheetNames={sheetNames} parseSheet={parseSheet} /> : ''}
+            {showSheets ? <SheetOverlay setShowSheets={setShowSheets} showSheets={showSheets} sheetNames={sheetNames} parseSheet={parseSheet} /> : ''}
             <label className='button'>
                 Import Sheet
                 <input
