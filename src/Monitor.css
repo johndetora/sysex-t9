@@ -1,9 +1,7 @@
 .monitor-container {
     z-index: 10;
-    overflow-x: scroll;
-    height: 40%;
+    height: 35%;
     width: 90%;
-
     min-width: 810px;
     border: 1px solid var(--lightBlue);
     border-radius: 5px;
@@ -19,8 +17,13 @@
     flex-direction: column;
 }
 
+.columns-container {
+    height: 95%;
+}
+
 .monitor-title {
-    margin: 10px auto;
+    justify-items: left;
+    margin: 1% auto 5px 3%;
     border-radius: 5px;
 }
 
@@ -34,30 +37,28 @@
     /* background-color: var(--light); */
     border-radius: 5px;
     padding: 1rem;
-    margin: 4px auto;
+    margin: auto;
     height: 90%;
-
     display: flex;
     flex-direction: row;
-
     justify-content: space-between;
 }
 
 .monitor-column {
     background-color: var(--light);
     border: 1px solid var(--lightBlue);
-
     border-radius: 5px;
     border-top: none;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     margin: 0 7px;
-    height: 92%;
+    height: 90%;
     min-width: 200px;
-    max-width: 420px;
-
+    /* width: auto; */
+    /* max-width: 420px; */
     min-height: 220px;
     padding: 2px;
+
     display: flex;
     flex-direction: column;
     overflow: scroll;

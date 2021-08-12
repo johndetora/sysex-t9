@@ -15,6 +15,8 @@ import './Monitor.css';
 //TODO: error handling for if no sysex, or remove sysex button if no data
 //TODO: clear response and reset sent state
 //TODO: make midi monitor button in the monitor also close it
+//TODO: change button state when new sheet is imported
+//TODO: change color of copy button
 
 function App() {
     const [items, setItems] = useState([]);
