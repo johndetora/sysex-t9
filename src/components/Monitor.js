@@ -29,26 +29,15 @@ function Monitor({ input, output, hex, allPorts, showMonitor, setShowMonitor }) 
             });
         });
     }
-    function setGroups() {
-        const result = [];
-        const grouped = allMessages.reduce((groupedPorts, message) => {
-            const name = message.port;
-            if (groupedPorts[name] == null) groupedPorts[name] = [];
-            groupedPorts[name].push({ time: message.time, message: message.message });
-            return groupedPorts;
-        }, {});
-
-        // names.map(el => {
-        // for (const [key, value] of Object.entries(grouped)) {
-        //     // console.log(`${key}: ${value}`);
-        //     result.push({ name: key, messages: value });
-        // }
-        // console.log(result);
-        console.log(grouped);
-        // setLog(grouped);
-        // console.log(names);
-        // setLog(grouped);
-    }
+    // function setGroups() {
+    //     const result = [];
+    //     const grouped = allMessages.reduce((groupedPorts, message) => {
+    //         const name = message.port;
+    //         if (groupedPorts[name] == null) groupedPorts[name] = [];
+    //         groupedPorts[name].push({ time: message.time, message: message.message });
+    //         return groupedPorts;
+    //     }, {});
+    // }
 
     // Makes the log scroll to the bottom automatically
     function logScroll() {
@@ -104,7 +93,6 @@ function Monitor({ input, output, hex, allPorts, showMonitor, setShowMonitor }) 
                 The following maps all available midi ports and creates a column 
                 of messages if the message's port property matches one of the inputs
                 
-            
                 */}
                 {inputPorts.map((port, index) => (
                     <div key={port.id} className='columns-container'>
@@ -132,17 +120,6 @@ function Monitor({ input, output, hex, allPorts, showMonitor, setShowMonitor }) 
                         </div>
                     </div>
                 ))}
-
-                {/* <div className='monitor-column'>
-                    {log.map(msg => (
-                        <div className='midi-message' key={msg.time}>
-                            <div>{msg.port}</div>
-                            <div>{msg.message}</div>
-                            <div>{`(${msg.message[1]})`}</div>
-                            <div>{msg.time}</div>
-                        </div>
-                    ))}
-                </div> */}
             </div>
         </div>
     );
