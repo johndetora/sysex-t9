@@ -96,7 +96,7 @@ function Monitor({ input, output, hex, allPorts, showMonitor, setShowMonitor }) 
                 */}
                 {inputPorts.map((port, index) => (
                     <div key={port.id} className='columns-container'>
-                        <div id={port.name} className={`midi-port ${classColors[index]}`}>
+                        <div id={port.name} className={`column-title ${classColors[index]}`}>
                             {port.name}
                         </div>
                         <div key={port.id} className={`monitor-column`}>
