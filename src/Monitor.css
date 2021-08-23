@@ -11,7 +11,7 @@
 
     background-color: var(--lightO);
     position: fixed;
-
+    padding-bottom: 1px;
     bottom: 0px;
     display: flex;
     flex-direction: column;
@@ -34,6 +34,7 @@
     border-radius: 5px;
 
     margin: auto;
+
     height: 90%;
     display: flex;
     /* max-width: 90%; */
