@@ -5,15 +5,16 @@ function Window() {
     return (
         <div className='window'>
             <section className='window__header'>
-                <h4>Welcome to Sysex Tester 9</h4>
+                <h4>Welcome to SysEx Tester 9</h4>
                 <p>
-                    Sysex T9 will import your excel sheets and parse the cells for sysex data, where you will be able to send the messages to your
-                    MIDI device while monitoring the response.
+                    Inspired by T9 predictive text message technology used in early mobile phones, Sysex-T9 aims to make it easier to send large
+                    amounts of SysEx messages to your MIDI devices. Sysex T9 will import your excel sheets and parse the cells for sysex data, where
+                    you will be able to send the messages to your MIDI device while monitoring the response.
                 </p>
                 ________________
             </section>
             <section className='window__content'>
-                <p> To use Sysex T9: </p>
+                <p> To use Sysex-T9: </p>
                 <p>
                     {' '}
                     1. Create an excel sheet based on{' '}
@@ -26,7 +27,7 @@ function Window() {
                     [help]{' '}
                 </p>
                 <p>3. Make sure your Input and Output Ports are set to the proper MIDI Device </p>
-                <p> 4. Click Send to send each Sysex message. If the message is successful, the response will be written to the Response cell. </p>
+                <p> 4. Click Send to send each SysEx message. If the message is successful, the response will be written to the Response cell. </p>
                 <p>
                     5. Along with the Sysex response message, the amount of bytes sent and received will be written and compared. <br />
                     If the number of bytes of the response matches the expected number of bytes, the message will be colored green. If the incorrect

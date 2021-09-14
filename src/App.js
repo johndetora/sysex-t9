@@ -125,7 +125,7 @@ function App() {
 
     return (
         <div className='container'>
-            <p className='title'>Sysex Tester v0.3.0</p>
+            <p className='title'>Sysex Tester v0.3.1</p>
             <div className='utilities'>
                 <ExcelReader setItems={setItems} setHelp={setViewHelp} help={viewHelp} />
                 <ExportExcel data={items} />

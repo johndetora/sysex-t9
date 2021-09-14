@@ -12,6 +12,10 @@ const MidiPorts = props => {
         props.setOutput(outputPort);
     }, true);
 
+    setInterval(() => {
+        props.setAll([[...WebMidi.inputs], [...WebMidi.outputs]]);
+    }, 3000);
+
     return (
         <div className='midi-ports'>
             <div>
