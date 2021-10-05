@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import WebMidi from 'webmidi';
 import '../App.css';
 const MidiPorts = props => {
@@ -8,13 +8,18 @@ const MidiPorts = props => {
         let inputPort = WebMidi.inputs[0]; //WebMidi.getInputByName(inputEl.value);
         let outputPort = WebMidi.outputs[0];
         props.setAll([[...WebMidi.inputs], [...WebMidi.outputs]]);
+
         props.setInput(inputPort);
         props.setOutput(outputPort);
     }, true);
 
-    setInterval(() => {
-        props.setAll([[...WebMidi.inputs], [...WebMidi.outputs]]);
-    }, 3000);
+    // useEffect(() => {
+    //     console.log('effect');
+    //     console.log(totalPorts);
+    //     return () => {
+    //         console.log('cleanup');
+    //     };
+    // }, [totalPorts]);
 
     return (
         <div className='midi-ports'>

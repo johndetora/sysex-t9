@@ -129,7 +129,7 @@ function App() {
             <div className='utilities'>
                 <ExcelReader setItems={setItems} setHelp={setViewHelp} help={viewHelp} />
                 <ExportExcel data={items} />
-                <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} setAll={setAllPorts} />
+                <MidiPorts setInput={setInput} setOutput={setOutput} input={input} output={output} setAll={setAllPorts} allPorts={allPorts} />
                 <button className='button' onClick={() => setShowMonitor(!showMonitor)}>
                     MIDI Monitor
                 </button>
